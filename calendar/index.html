@@ -176,8 +176,34 @@ body {
 .dentry .days { font-family:'Plex Mono'; font-size:11px; color:var(--ink-muted); margin-top:3px; }
 .dentry.featured .lbl { font-weight:600; }
 
-.foot { text-align:center; color:var(--ink-muted); font-size:11.5px; margin-top:22px; font-family:'Plex Mono'; }
+.foot { text-align:center; margin-top:26px; display:flex; flex-direction:column; align-items:center; gap:10px; }
 .foot a { color:var(--ink-muted); }
+
+.sync-strip {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'Plex Mono'; font-size:11px; letter-spacing:0.04em; color:var(--ink-muted);
+  padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface);
+}
+.sync-dot {
+  width:7px; height:7px; border-radius:50%; background:#22c55e; flex-shrink:0;
+  box-shadow:0 0 5px #22c55e, 0 0 10px #22c55e;
+  animation: syncPulse 2s ease-in-out infinite;
+}
+@keyframes syncPulse {
+  0%, 100% { opacity:1; transform:scale(1); }
+  50% { opacity:.45; transform:scale(.8); }
+}
+.sync-label { color:#22c55e; font-weight:600; }
+.sync-sep { opacity:.5; }
+
+.ai-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Plex Mono'; font-size:10.5px; letter-spacing:0.03em; font-weight:600;
+  padding:6px 13px; border-radius:999px; color:var(--gold);
+  background:linear-gradient(120deg, color-mix(in srgb, var(--gold) 14%, transparent), color-mix(in srgb, var(--poke-tag) 14%, transparent));
+  border:1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  box-shadow:0 0 14px color-mix(in srgb, var(--gold) 20%, transparent);
+}
 
 a { color:inherit; }
 ::-webkit-scrollbar { width:8px; }
@@ -217,7 +243,15 @@ a { color:inherit; }
     </div>
   </div>
 
-  <div class="foot">Auto-refreshed daily &middot; <span id="genDate"></span></div>
+  <div class="foot">
+    <div class="sync-strip">
+      <span class="sync-dot"></span>
+      <span class="sync-label">LIVE</span>
+      <span class="sync-sep">&middot;</span>
+      <span class="sync-ts">[SYNCED] <span id="genDate"></span></span>
+    </div>
+    <div class="ai-badge">&#10024; Built &amp; Maintained by AI</div>
+  </div>
 </div>
 
 <script>
