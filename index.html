@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swyft ACO — Sign-Up</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --border:#2a2f3a;
+    --text:#e8eaed; --muted:#9aa3b2; --accent:#5b8cff; --accent2:#7c5cff;
+    --danger:#ff5c5c; --ok:#3ddc84;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(180deg,#0f1115,#12151c); color:var(--text);
+    min-height:100vh; padding:32px 16px 80px;
+  }
+  .wrap{max-width:720px; margin:0 auto}
+  h1{font-size:1.6rem; margin:0 0 4px}
+  .sub{color:var(--muted); margin:0 0 24px; font-size:.95rem}
+  .steps{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:24px; font-size:.9rem; line-height:1.6; color:var(--muted);
+  }
+  .steps b{color:var(--text)}
+  .retailer-select{display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap}
+  .retailer-select button{
+    flex:1; min-width:120px; padding:12px; border-radius:10px; border:1px solid var(--border);
+    background:var(--panel); color:var(--text); font-weight:600; cursor:pointer; font-size:.9rem;
+  }
+  .retailer-select button.active{background:var(--accent); border-color:var(--accent); color:#fff}
+  fieldset{
+    border:1px solid var(--border); border-radius:12px; padding:16px 18px 18px;
+    margin:0 0 18px; background:var(--panel);
+  }
+  legend{padding:0 8px; font-weight:700; font-size:.85rem; letter-spacing:.04em; text-transform:uppercase; color:var(--accent)}
+  legend.sensitive{color:var(--danger)}
+  label{display:block; font-size:.82rem; color:var(--muted); margin:12px 0 4px}
+  label:first-of-type{margin-top:4px}
+  input[type=text], input[type=password], input[type=email], select, textarea{
+    width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--panel2); color:var(--text); font-size:.92rem; font-family:inherit;
+  }
+  input:focus, select:focus, textarea:focus{outline:2px solid var(--accent); border-color:var(--accent)}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .row3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px}
+  .checkrow{display:flex; align-items:center; gap:8px; margin-top:14px}
+  .checkrow input{width:auto}
+  .checkrow label{margin:0; color:var(--text); font-size:.85rem}
+  .hint{font-size:.75rem; color:var(--muted); margin-top:2px}
+  .toggle-pass{position:relative}
+  .toggle-pass input{padding-right:52px}
+  .toggle-pass button{
+    position:absolute; right:6px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--muted);
+    cursor:pointer; font-size:.75rem; padding:4px 6px; line-height:1;
+  }
+  .imap-link{display:inline-block; margin:6px 0 10px; font-size:.82rem; color:var(--accent); text-decoration:none}
+  .imap-link:hover{text-decoration:underline}
+  #billingFields{display:none}
+  #billingFields.show{display:block}
+  .actions{display:flex; gap:10px; margin-top:8px; flex-wrap:wrap}
+  .actions button, .actions a{
+    flex:1; min-width:180px; text-align:center; padding:14px; border-radius:10px; border:none;
+    font-weight:700; font-size:.95rem; cursor:pointer; text-decoration:none;
+  }
+  #copyBtn{background:var(--accent); color:#fff}
+  #otsLink{background:var(--panel2); border:1px solid var(--border); color:var(--text)}
+  #status{margin-top:12px; font-size:.9rem; min-height:1.4em; font-weight:700; padding:0; border-radius:8px; transition:padding .15s}
+  #status.ok{color:#08301c; background:var(--ok); padding:10px 14px}
+  #status.err{color:#3a0d0d; background:var(--danger); padding:10px 14px}
+  #previewBox{font-family:ui-monospace,Consolas,monospace; font-size:.78rem; margin-top:6px; white-space:pre; resize:vertical}
+  #errorBanner{display:none; background:var(--danger); color:#3a0d0d; padding:12px 14px; border-radius:10px; margin-bottom:20px; font-size:.85rem; font-weight:700}
+  .footer-note{margin-top:28px; font-size:.75rem; color:var(--muted); line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="errorBanner">⚠️ A script error occurred — some features may not work. Details logged to the browser console (F12).</div>
+  <h1>⚡ Swyft ACO — Sign-Up</h1>
+  <p class="sub">Fill in your info below, then follow the two steps at the bottom. Nothing here is sent anywhere or saved — it only builds the text block you paste into onetimesecret.com yourself.</p>
+
+  <div class="steps">
+    <b>1.</b> Pick your retailer and fill in every field below.<br>
+    <b>2.</b> Click <b>Copy Info Block</b>.<br>
+    <b>3.</b> Click <b>Open onetimesecret.com</b>, paste (Ctrl+V) into the box there, click Create Secret.<br>
+    <b>4.</b> Paste the resulting one-time link into your sign-up ticket.
+  </div>
+
+  <div class="retailer-select">
+    <button type="button" class="active" data-retailer="pkc">🔵 Pokémon Center</button>
+    <button type="button" data-retailer="sams">🟡 Sam's Club</button>
+    <button type="button" data-retailer="amazon">🟠 Amazon</button>
+  </div>
+
+  <form id="signupForm">
+
+    <fieldset>
+      <legend>Account</legend>
+      <label id="emailLabel">Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com">
+      <div id="amazonPwWrap" style="display:none">
+        <label>Amazon Account Password</label>
+        <div class="toggle-pass">
+          <input type="password" id="amazonPassword">
+          <button type="button" class="pw-toggle" data-target="amazonPassword">show</button>
+        </div>
+      </div>
+      <label>Discord User ID (optional)</label>
+      <input type="text" id="discordId" placeholder="e.g. 123456789012345678">
+      <label>Only One Checkout?</label>
+      <select id="onlyOneCheckout"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select>
+    </fieldset>
+
+    <fieldset>
+      <legend class="sensitive">Card</legend>
+      <label>Name on Card</label>
+      <input type="text" id="cardName">
+      <label>Card Type</label>
+      <select id="cardType">
+        <option>Visa</option>
+        <option>MasterCard</option>
+        <option>Discover</option>
+        <option>Amex</option>
+        <option>JCB</option>
+      </select>
+      <label>Card Number (no spaces)</label>
+      <div class="toggle-pass">
+        <input type="password" id="cardNumber" inputmode="numeric" autocomplete="off">
+        <button type="button" class="pw-toggle" data-target="cardNumber">show</button>
+      </div>
+      <div class="row3">
+        <div><label>Exp. Month (MM)</label><input type="text" id="expMonth" maxlength="2"></div>
+        <div><label>Exp. Year (YY)</label><input type="text" id="expYear" maxlength="2"></div>
+        <div><label>CVV</label>
+          <div class="toggle-pass">
+            <input type="password" id="cvv" maxlength="4" autocomplete="off">
+            <button type="button" class="pw-toggle" data-target="cvv">show</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Shipping (required)</legend>
+      <label>Shipping Name</label><input type="text" id="shipName">
+      <label>Shipping Phone</label><input type="text" id="shipPhone" placeholder="no spaces/dashes">
+      <label>Shipping Address</label><input type="text" id="shipAddress">
+      <div class="row2">
+        <div><label>Post Code</label><input type="text" id="shipPost"></div>
+        <div><label>City</label><input type="text" id="shipCity"></div>
+      </div>
+      <div class="row2">
+        <div><label>State (e.g. CA)</label><input type="text" id="shipState"></div>
+        <div><label>Country (e.g. USA)</label><input type="text" id="shipCountry"></div>
+      </div>
+      <div class="checkrow">
+        <input type="checkbox" id="sameBilling" checked>
+        <label for="sameBilling">Billing address is the same as shipping</label>
+      </div>
+    </fieldset>
+
+    <fieldset id="billingFields">
+      <legend>Billing (only if different)</legend>
+      <label>Billing Name</label><input type="text" id="billName">
+      <label>Billing Phone</label><input type="text" id="billPhone">
+      <label>Billing Address</label><input type="text" id="billAddress">
+      <div class="row2">
+        <div><label>Post Code</label><input type="text" id="billPost"></div>
+        <div><label>City</label><input type="text" id="billCity"></div>
+      </div>
+      <div class="row2">
+        <div><label>State</label><input type="text" id="billState"></div>
+        <div><label>Country</label><input type="text" id="billCountry"></div>
+      </div>
+    </fieldset>
+
+    <fieldset id="samsMembership" style="display:none">
+      <legend class="sensitive">Sam's Membership</legend>
+      <div class="checkrow">
+        <input type="checkbox" id="samsHasMembership">
+        <label for="samsHasMembership">I HAVE a Sam's Club membership</label>
+      </div>
+      <p class="hint">If unchecked, the bot buys a membership instead of the product.</p>
+      <label>Sam's Email (must match your Sam's account)</label>
+      <input type="email" id="samsEmail">
+      <label>Sam's Password</label>
+      <div class="toggle-pass">
+        <input type="password" id="samsPassword">
+        <button type="button" class="pw-toggle" data-target="samsPassword">show</button>
+      </div>
+    </fieldset>
+
+    <fieldset id="imapFields" style="display:none">
+      <legend class="sensitive">Email Access (IMAP — for OTP / order codes)</legend>
+      <a class="imap-link" href="https://docs.google.com/document/d/1wrwif2l59TkeXHFk_lVGufwOPtGlg2BGLTCd89AZTYE/edit" target="_blank" rel="noopener">📖 IMAP app-password guide — click here for step-by-step instructions</a>
+      <label>IMAP (email:app-password)</label>
+      <div class="toggle-pass">
+        <input type="password" id="imap" placeholder="email:app-password" autocomplete="off">
+        <button type="button" class="pw-toggle" data-target="imap">show</button>
+      </div>
+      <div class="checkrow">
+        <input type="checkbox" id="imapConfirm">
+        <label for="imapConfirm">I understand this email must match the account email above, or I won't be run</label>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" id="copyBtn">📋 Copy Info Block</button>
+      <a id="otsLink" href="https://onetimesecret.com" target="_blank" rel="noopener">🔗 Open onetimesecret.com</a>
+    </div>
+    <div id="status"></div>
+    <label style="margin-top:16px">Info block preview (also selectable/copyable by hand)</label>
+    <textarea id="previewBox" rows="8" readonly onclick="this.select()"></textarea>
+  </form>
+
+  <p class="footer-note">
+    This page runs entirely in your browser. Nothing you type is transmitted to me, logged, or stored anywhere —
+    it only gets copied to your own clipboard so you can paste it into onetimesecret.com yourself, exactly like the manual process.
+    Closing this tab clears everything.
+  </p>
+</div>
+
+<script>
+window.addEventListener('error', (e)=>{
+  const banner = document.getElementById('errorBanner');
+  if(banner){ banner.style.display = 'block'; banner.textContent = '⚠️ Script error: ' + e.message + ' (line ' + e.lineno + ')'; }
+});
+
+let retailer = 'pkc';
+
+document.querySelectorAll('.retailer-select button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.retailer-select button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    retailer = btn.dataset.retailer;
+    updateVisibility();
+    refreshPreview();
+  });
+});
+
+function updateVisibility(){
+  document.getElementById('amazonPwWrap').style.display = retailer==='amazon' ? 'block' : 'none';
+  document.getElementById('emailLabel').textContent = retailer==='amazon' ? 'Amazon Account Email' : 'Email Address';
+  document.getElementById('samsMembership').style.display = retailer==='sams' ? 'block' : 'none';
+  document.getElementById('imapFields').style.display = (retailer==='sams' || retailer==='amazon') ? 'block' : 'none';
+}
+updateVisibility();
+
+document.querySelectorAll('.pw-toggle').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const input = document.getElementById(btn.dataset.target);
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    btn.textContent = showing ? 'show' : 'hide';
+  });
+});
+
+const sameBilling = document.getElementById('sameBilling');
+const billingFields = document.getElementById('billingFields');
+function updateBilling(){ billingFields.classList.toggle('show', !sameBilling.checked); }
+sameBilling.addEventListener('change', ()=>{ updateBilling(); refreshPreview(); });
+updateBilling();
+
+function v(id){ return (document.getElementById(id).value || '').trim(); }
+function boolStr(id){ return document.getElementById(id).checked; }
+
+function buildBlock(){
+  const same = sameBilling.checked;
+  let lines = [];
+
+  if(retailer==='pkc'){
+    lines = [
+      '=== POKÉMON CENTER PROFILE ===','',
+      `Email Address: ${v('email')}`,
+      `Discord User ID (optional): ${v('discordId')}`,
+      `Only One Checkout (TRUE/FALSE): ${v('onlyOneCheckout')}`,'',
+      '--- CARD ---',
+      `Name on Card: ${v('cardName')}`,
+      `Card Type (Visa/MasterCard): ${v('cardType')}`,
+      `Card Number (NO SPACES): ${v('cardNumber')}`,
+      `Expiration Month (MM): ${v('expMonth')}`,
+      `Expiration Year (YY): ${v('expYear')}`,
+      `CVV: ${v('cvv')}`,'',
+      '--- SHIPPING (required) ---',
+      `Shipping Name: ${v('shipName')}`,
+      `Shipping Phone (no spaces/dashes): ${v('shipPhone')}`,
+      `Shipping Address: ${v('shipAddress')}`,
+      `Shipping Post Code: ${v('shipPost')}`,
+      `Shipping City: ${v('shipCity')}`,
+      `Shipping State (e.g. CA): ${v('shipState')}`,
+      `Shipping Country (e.g. USA): ${v('shipCountry')}`,'',
+      `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
+    ];
+    if(!same){
+      lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
+        `Billing Name: ${v('billName')}`,
+        `Billing Phone: ${v('billPhone')}`,
+        `Billing Address: ${v('billAddress')}`,
+        `Billing Post Code: ${v('billPost')}`,
+        `Billing City: ${v('billCity')}`,
+        `Billing State: ${v('billState')}`,
+        `Billing Country: ${v('billCountry')}`);
+    }
+  }
+
+  if(retailer==='sams'){
+    lines = [
+      "=== SAM'S CLUB PROFILE ===",'',
+      `Email Address: ${v('email')}`,
+      `Discord User ID (optional): ${v('discordId')}`,
+      `Only One Checkout (TRUE/FALSE): ${v('onlyOneCheckout')}`,'',
+      '--- CARD ---',
+      `Name on Card: ${v('cardName')}`,
+      `Card Type (Visa/MasterCard): ${v('cardType')}`,
+      `Card Number (NO SPACES): ${v('cardNumber')}`,
+      `Expiration Month: ${v('expMonth')}`,
+      `Expiration Year: ${v('expYear')}`,
+      `CVV: ${v('cvv')}`,'',
+      '--- SHIPPING (required) ---',
+      `Shipping Name: ${v('shipName')}`,
+      `Shipping Phone: ${v('shipPhone')}`,
+      `Shipping Address: ${v('shipAddress')}`,
+      `Shipping Post Code: ${v('shipPost')}`,
+      `Shipping City: ${v('shipCity')}`,
+      `Shipping State: ${v('shipState')}`,
+      `Shipping Country: ${v('shipCountry')}`,'',
+      `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
+    ];
+    if(!same){
+      lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
+        `Billing Name: ${v('billName')}`,
+        `Billing Phone: ${v('billPhone')}`,
+        `Billing Address: ${v('billAddress')}`,
+        `Billing Post Code: ${v('billPost')}`,
+        `Billing City: ${v('billCity')}`,
+        `Billing State: ${v('billState')}`,
+        `Billing Country: ${v('billCountry')}`);
+    }
+    lines.push('', "--- SAM'S MEMBERSHIP ---",
+      `I HAVE a membership (no membership = bot buys one, NOT the product) — type YES: ${boolStr('samsHasMembership') ? 'YES' : ''}`,
+      `Sam's Email (MUST match your Sam's account): ${v('samsEmail')}`,
+      `Sam's Password: ${v('samsPassword')}`,
+      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${v('imap')}`,
+      `Sam's email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${boolStr('imapConfirm') ? 'I UNDERSTAND' : ''}`);
+  }
+
+  if(retailer==='amazon'){
+    lines = [
+      '=== AMAZON PROFILE ===','',
+      `Amazon Account Email: ${v('email')}`,
+      `Amazon Account Password: ${v('amazonPassword')}`,
+      `Discord User ID (optional): ${v('discordId')}`,
+      `Only One Checkout (TRUE/FALSE): ${v('onlyOneCheckout')}`,'',
+      '--- CARD ---',
+      `Name on Card: ${v('cardName')}`,
+      `Card Type (Visa/MasterCard): ${v('cardType')}`,
+      `Card Number (NO SPACES): ${v('cardNumber')}`,
+      `Expiration Month (MM): ${v('expMonth')}`,
+      `Expiration Year (YY): ${v('expYear')}`,
+      `CVV: ${v('cvv')}`,'',
+      '--- SHIPPING (required) ---',
+      `Shipping Name: ${v('shipName')}`,
+      `Shipping Phone (no spaces/dashes): ${v('shipPhone')}`,
+      `Shipping Address: ${v('shipAddress')}`,
+      `Shipping Post Code: ${v('shipPost')}`,
+      `Shipping City: ${v('shipCity')}`,
+      `Shipping State (e.g. CA): ${v('shipState')}`,
+      `Shipping Country (e.g. USA): ${v('shipCountry')}`,'',
+      `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
+    ];
+    if(!same){
+      lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
+        `Billing Name: ${v('billName')}`,
+        `Billing Phone: ${v('billPhone')}`,
+        `Billing Address: ${v('billAddress')}`,
+        `Billing Post Code: ${v('billPost')}`,
+        `Billing City: ${v('billCity')}`,
+        `Billing State: ${v('billState')}`,
+        `Billing Country: ${v('billCountry')}`);
+    }
+    lines.push('', '--- EMAIL ACCESS (needed for OTP / order verification codes) ---',
+      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${v('imap')}`,
+      `Amazon email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${boolStr('imapConfirm') ? 'I UNDERSTAND' : ''}`);
+  }
+
+  return lines.join('\n');
+}
+
+const previewBox = document.getElementById('previewBox');
+function refreshPreview(){ previewBox.value = buildBlock(); }
+
+document.getElementById('signupForm').addEventListener('input', refreshPreview);
+
+const copyBtn = document.getElementById('copyBtn');
+const status = document.getElementById('status');
+
+function legacyCopy(text){
+  previewBox.value = text;
+  previewBox.focus();
+  previewBox.select();
+  previewBox.setSelectionRange(0, text.length);
+  const ok = document.execCommand && document.execCommand('copy');
+  return !!ok;
+}
+
+async function copyBlock(){
+  const block = buildBlock();
+  refreshPreview();
+  let copied = false;
+
+  if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+    try{ await navigator.clipboard.writeText(block); copied = true; }catch(e){ copied = false; }
+  }
+  if(!copied){
+    try{ copied = legacyCopy(block); }catch(e){ copied = false; }
+  }
+
+  if(copied){
+    status.textContent = '✅ Copied to clipboard! Now click "Open onetimesecret.com" and paste it in.';
+    status.className = 'ok';
+    const original = copyBtn.textContent;
+    copyBtn.textContent = '✅ Copied!';
+    setTimeout(()=>{ copyBtn.textContent = original; }, 2000);
+  }else{
+    status.textContent = '⚠️ Auto-copy was blocked by your browser. The box below is selected — press Ctrl+C (or Cmd+C on Mac) now.';
+    status.className = 'err';
+    previewBox.focus();
+    previewBox.select();
+  }
+}
+
+copyBtn.addEventListener('click', copyBlock);
+
+updateVisibility();
+refreshPreview();
+</script>
+</body>
+</html>
