@@ -72,6 +72,38 @@
   #previewBox{font-family:ui-monospace,Consolas,monospace; font-size:.78rem; margin-top:6px; white-space:pre; resize:vertical}
   #errorBanner{display:none; background:var(--danger); color:#3a0d0d; padding:12px 14px; border-radius:10px; margin-bottom:20px; font-size:.85rem; font-weight:700}
   .footer-note{margin-top:28px; font-size:.75rem; color:var(--muted); line-height:1.6}
+
+  .trust-bar{display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 26px}
+  .trust-chip{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:ui-monospace,Consolas,monospace; font-size:.7rem; font-weight:600; letter-spacing:.03em;
+    padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--panel); color:var(--muted);
+  }
+  .trust-chip.live{ color:#3ddc84; border-color:rgba(61,220,132,.35); box-shadow:0 0 12px rgba(61,220,132,.15) }
+  .trust-chip.ai{
+    color:#b9a8ff; border-color:rgba(124,92,255,.4);
+    background:linear-gradient(120deg, rgba(91,140,255,.14), rgba(124,92,255,.14));
+    box-shadow:0 0 14px rgba(124,92,255,.2);
+  }
+  .pulse-dot{
+    width:7px; height:7px; border-radius:50%; background:#3ddc84; flex-shrink:0;
+    box-shadow:0 0 5px #3ddc84, 0 0 10px #3ddc84;
+    animation:pulseDot 2s ease-in-out infinite;
+  }
+  @keyframes pulseDot{ 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.4; transform:scale(.8)} }
+
+  .retailer-select button{ transition:box-shadow .15s, border-color .15s }
+  .retailer-select button.active{ box-shadow:0 0 16px rgba(91,140,255,.4) }
+  fieldset{ transition:box-shadow .15s, border-color .15s }
+  fieldset:focus-within{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), 0 0 18px rgba(91,140,255,.15) }
+
+  .ai-footer-badge{
+    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    font-family:ui-monospace,Consolas,monospace; font-size:.72rem; font-weight:600; letter-spacing:.02em;
+    padding:6px 13px; border-radius:999px; color:#b9a8ff;
+    background:linear-gradient(120deg, rgba(91,140,255,.14), rgba(124,92,255,.14));
+    border:1px solid rgba(124,92,255,.35); box-shadow:0 0 14px rgba(124,92,255,.18);
+  }
 </style>
 </head>
 <body>
@@ -79,6 +111,13 @@
   <div id="errorBanner">⚠️ A script error occurred — some features may not work. Details logged to the browser console (F12).</div>
   <h1>⚡ Swyft ACO — Sign-Up</h1>
   <p class="sub">Fill in your info below, then follow the two steps at the bottom. Nothing here is sent anywhere or saved — it only builds the text block you paste into onetimesecret.com yourself.</p>
+
+  <div class="trust-bar">
+    <span class="trust-chip live"><span class="pulse-dot"></span>LIVE &middot; AI MONITORED</span>
+    <span class="trust-chip">&#128274; NOTHING STORED</span>
+    <span class="trust-chip">&#9889; INSTANT SETUP</span>
+    <span class="trust-chip ai">&#10024; AI POWERED INTAKE</span>
+  </div>
 
   <div class="steps">
     <b>1.</b> Pick your retailer and fill in every field below.<br>
@@ -227,6 +266,7 @@
     it only gets copied to your own clipboard so you can paste it into onetimesecret.com yourself, exactly like the manual process.
     Closing this tab clears everything.
   </p>
+  <div class="ai-footer-badge">&#10024; Built &amp; Maintained by AI</div>
 </div>
 
 <script>
