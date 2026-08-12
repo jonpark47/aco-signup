@@ -257,7 +257,7 @@ function updateVisibility(){
   document.getElementById('bandaiPwWrap').style.display = retailer==='bandai' ? 'block' : 'none';
   document.getElementById('emailLabel').textContent = EMAIL_LABELS[retailer] || 'Email Address';
   document.getElementById('samsMembership').style.display = retailer==='sams' ? 'block' : 'none';
-  document.getElementById('imapFields').style.display = (retailer==='sams' || retailer==='amazon' || retailer==='bandai') ? 'block' : 'none';
+  document.getElementById('imapFields').style.display = (retailer==='sams' || retailer==='amazon') ? 'block' : 'none';
 }
 updateVisibility();
 
@@ -432,9 +432,6 @@ function buildBlock(){
         `Billing State: ${v('billState')}`,
         `Billing Country: ${v('billCountry')}`);
     }
-    lines.push('', '--- EMAIL ACCESS (needed for OTP / order verification codes) ---',
-      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${v('imap')}`,
-      `Bandai email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${boolStr('imapConfirm') ? 'I UNDERSTAND' : ''}`);
   }
 
   return lines.join('\n');
