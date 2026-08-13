@@ -68,6 +68,16 @@
     font-weight:700; font-size:.95rem; cursor:pointer; text-decoration:none;
   }
   #copyBtn{background:var(--accent); color:#fff}
+  #autoLinkBtn{
+    background:linear-gradient(120deg, var(--accent), var(--accent2)); color:#fff;
+    box-shadow:0 0 18px rgba(124,92,255,.3);
+  }
+  #autoLinkBtn:disabled{opacity:.6; cursor:progress}
+  #autoLinkResult{display:none; margin-top:12px; font-size:.88rem; line-height:1.6; padding:12px 14px; border-radius:10px; word-break:break-all}
+  #autoLinkResult.show{display:block}
+  #autoLinkResult.ok{background:rgba(61,220,132,.12); border:1px solid rgba(61,220,132,.4); color:var(--text)}
+  #autoLinkResult.ok a{color:var(--ok); font-weight:700}
+  #autoLinkResult.err{background:rgba(255,92,92,.12); border:1px solid rgba(255,92,92,.4); color:var(--text)}
   #otsLink{background:var(--panel2); border:1px solid var(--border); color:var(--text)}
   #status{margin-top:12px; font-size:.9rem; min-height:1.4em; font-weight:700; padding:0; border-radius:8px; transition:padding .15s}
   #status.ok{color:#08301c; background:var(--ok); padding:10px 14px}
@@ -330,6 +340,12 @@
     </fieldset>
 
     <div class="actions">
+      <button type="button" id="autoLinkBtn">✨ Generate Secure Link (1-Click)</button>
+    </div>
+    <div id="autoLinkResult"></div>
+
+    <p class="hint" style="margin:16px 0 8px">Prefer to do it yourself on onetimesecret.com? Use the manual steps instead:</p>
+    <div class="actions">
       <button type="button" id="copyBtn">📋 Copy Info Block</button>
       <a id="otsLink" href="https://onetimesecret.com" target="_blank" rel="noopener">🔗 Open onetimesecret.com</a>
     </div>
@@ -350,10 +366,12 @@
   </form>
 
   <p class="footer-note">
-    This page runs entirely in your browser. Nothing you type is logged or stored anywhere — it only gets copied to your
-    own clipboard so you can paste it into onetimesecret.com yourself, exactly like the manual process.
-    The one exception is the optional <strong>Test my IMAP login</strong> button: pressing it sends only that email and app
-    password to our server for a single sign-in attempt, which is never written to disk. Closing this tab clears everything.
+    This page runs entirely in your browser. Nothing you type is logged or stored anywhere by default — the
+    <strong>Copy Info Block</strong> button only copies to your own clipboard, exactly like the manual process.
+    Two optional buttons briefly touch our server, never write anything to disk, and never log the content: pressing
+    <strong>Test my IMAP login</strong> sends only that email and app password for a single sign-in attempt, and pressing
+    <strong>Generate Secure Link</strong> relays your filled-in info straight through to onetimesecret.com to create the
+    link for you, the same trip it would take if you pasted it there yourself. Closing this tab clears everything.
   </p>
   <div class="ai-footer-badge">&#10024; Built &amp; Maintained by AI</div>
 </div>
@@ -836,6 +854,88 @@ async function copyBlock(){
 }
 
 copyBtn.addEventListener('click', copyBlock);
+
+// ---- one-click secure link (server-side proxy -- see vps/onetimesecret_proxy.py) ----
+const AUTO_LINK_URL = 'https://163-192-27-154.sslip.io/onetimesecret-create';
+const autoLinkBtn = document.getElementById('autoLinkBtn');
+const autoLinkResult = document.getElementById('autoLinkResult');
+
+function collectValidCombinedBlock(){
+  // Shared with copyBlock()'s checks: ack ticked, at least one retailer
+  // started, nothing required missing. Returns null (after showing the
+  // relevant error in #status) if anything's wrong, else the combined text.
+  if(!ackConfirm.checked){
+    ackFieldset.classList.add('missing');
+    ackFieldset.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    status.textContent = '⚠️ Tick the confirmation box above first.';
+    status.className = 'err';
+    return null;
+  }
+  const all = allProfilesIncludingCurrent();
+  updateRetailerBadges();
+  const started = RETAILERS.filter(k => !isBlankProfile(all[k]));
+  if(started.length === 0){
+    status.textContent = '⚠️ Fill out at least one retailer above first.';
+    status.className = 'err';
+    return null;
+  }
+  const errors = [];
+  started.forEach(k => {
+    const missing = validateProfile(k, all[k]);
+    if(missing.length) errors.push(`${RETAILER_NAMES[k]} is missing: ${missing.join(', ')}`);
+  });
+  if(errors.length){
+    status.textContent = '⚠️ ' + errors.join('  |  ');
+    status.className = 'err';
+    return null;
+  }
+  status.textContent = '';
+  status.className = '';
+  return started.map(k => buildBlockFor(k, all[k])).join('\n\n' + '='.repeat(44) + '\n\n')
+    + '\n\n--- ACKNOWLEDGEMENT ---\n'
+    + `Info accurate + authorized to purchase on the retailer(s) above only: AGREED`;
+}
+
+async function generateSecureLink(){
+  autoLinkResult.classList.remove('show', 'ok', 'err');
+
+  const combined = collectValidCombinedBlock();
+  if(combined === null) return;
+
+  const original = autoLinkBtn.textContent;
+  autoLinkBtn.disabled = true;
+  autoLinkBtn.textContent = 'Generating…';
+
+  try{
+    const res = await fetch(AUTO_LINK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: combined }),
+    });
+    const data = await res.json();
+
+    if(data.ok && data.url){
+      let copied = false;
+      if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
+        try{ await navigator.clipboard.writeText(data.url); copied = true; }catch(e){ copied = false; }
+      }
+      autoLinkResult.innerHTML = `✅ Secure link created${copied ? ' and copied to your clipboard' : ''}! Paste it in your ticket:<br>`
+        + `<a href="${data.url}" target="_blank" rel="noopener">${data.url}</a>`;
+      autoLinkResult.classList.add('show', 'ok');
+    }else{
+      autoLinkResult.textContent = '⚠️ ' + (data.message || 'Could not generate a link.') + ' Use the manual steps below instead.';
+      autoLinkResult.classList.add('show', 'err');
+    }
+  }catch(e){
+    autoLinkResult.textContent = "⚠️ Couldn't reach the link generator. Use the manual steps below instead.";
+    autoLinkResult.classList.add('show', 'err');
+  }finally{
+    autoLinkBtn.disabled = false;
+    autoLinkBtn.textContent = original;
+  }
+}
+
+autoLinkBtn.addEventListener('click', generateSecureLink);
 
 // ---- strict input filtering: these fields can only ever contain digits ---
 function digitsOnly(id, maxLen){
