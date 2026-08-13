@@ -70,6 +70,21 @@
   #status.ok{color:#08301c; background:var(--ok); padding:10px 14px}
   #status.err{color:#3a0d0d; background:var(--danger); padding:10px 14px}
   #previewBox{font-family:ui-monospace,Consolas,monospace; font-size:.78rem; margin-top:6px; white-space:pre; resize:vertical}
+  .imap-test{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px}
+  #imapTestBtn{
+    background:transparent; color:var(--accent); border:1px solid var(--accent);
+    padding:8px 14px; border-radius:8px; font-weight:700; font-size:.82rem; cursor:pointer;
+  }
+  #imapTestBtn:hover:not(:disabled){background:var(--accent); color:#fff}
+  #imapTestBtn:disabled{opacity:.6; cursor:progress}
+  .imap-test-msg{font-size:.8rem; color:var(--muted); flex:1 1 220px; line-height:1.45}
+  .imap-test-msg.ok{color:#0d7a4a; font-weight:700}
+  .imap-test-msg.err{color:#b3261e; font-weight:700}
+  .imap-test-note{font-size:.72rem; color:var(--muted); line-height:1.55; margin:8px 0 0}
+  .ack-row{align-items:flex-start}
+  .ack-row label{font-size:.82rem; line-height:1.55}
+  #ackFieldset.missing{border-color:#b3261e}
+  #copyBtn:disabled{opacity:.55; cursor:not-allowed}
   #errorBanner{display:none; background:var(--danger); color:#3a0d0d; padding:12px 14px; border-radius:10px; margin-bottom:20px; font-size:.85rem; font-weight:700}
   .footer-note{margin-top:28px; font-size:.75rem; color:var(--muted); line-height:1.6}
 
@@ -258,6 +273,29 @@
         <input type="checkbox" id="imapConfirm">
         <label for="imapConfirm">I understand this email must match the account email above, or I won't be run</label>
       </div>
+
+      <div class="imap-test">
+        <button type="button" id="imapTestBtn">🔌 Test my IMAP login</button>
+        <span id="imapTestMsg" class="imap-test-msg">Recommended — checks your app password actually works before you submit.</span>
+      </div>
+      <p class="imap-test-note">
+        Testing sends just that email and app password to our own server to attempt a single sign-in.
+        It is never saved or written to disk, and nothing else on this page is sent anywhere.
+        Skip it if you'd rather verify manually.
+      </p>
+    </fieldset>
+
+    <fieldset id="ackFieldset">
+      <legend>Confirm &amp; Submit</legend>
+      <div class="checkrow ack-row">
+        <input type="checkbox" id="ackConfirm">
+        <label for="ackConfirm">
+          I confirm the information above is accurate and belongs to me, and I authorise Swyft ACO to use it
+          to attempt purchases of TCG products on my behalf. I understand checkouts are attempted on a
+          best-effort basis with no guarantee of success, that my card is only charged when an order goes
+          through, and that I am responsible for any orders placed for me.
+        </label>
+      </div>
     </fieldset>
 
     <div class="actions">
@@ -270,9 +308,10 @@
   </form>
 
   <p class="footer-note">
-    This page runs entirely in your browser. Nothing you type is transmitted to me, logged, or stored anywhere —
-    it only gets copied to your own clipboard so you can paste it into onetimesecret.com yourself, exactly like the manual process.
-    Closing this tab clears everything.
+    This page runs entirely in your browser. Nothing you type is logged or stored anywhere — it only gets copied to your
+    own clipboard so you can paste it into onetimesecret.com yourself, exactly like the manual process.
+    The one exception is the optional <strong>Test my IMAP login</strong> button: pressing it sends only that email and app
+    password to our server for a single sign-in attempt, which is never written to disk. Closing this tab clears everything.
   </p>
   <div class="ai-footer-badge">&#10024; Built &amp; Maintained by AI</div>
 </div>
@@ -523,6 +562,9 @@ function buildBlock(){
       `Riftbound email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${boolStr('imapConfirm') ? 'I UNDERSTAND' : ''}`);
   }
 
+  lines.push('', '--- ACKNOWLEDGEMENT ---',
+    `Info accurate + authorised to purchase on my behalf: ${boolStr('ackConfirm') ? 'AGREED' : 'NOT AGREED'}`);
+
   return lines.join('\n');
 }
 
@@ -543,7 +585,66 @@ function legacyCopy(text){
   return !!ok;
 }
 
+// ---- IMAP tester -------------------------------------------------------
+const IMAP_TEST_URL = 'https://163-192-27-154.sslip.io/imap-test';
+const imapTestBtn = document.getElementById('imapTestBtn');
+const imapTestMsg = document.getElementById('imapTestMsg');
+
+function setTestMsg(text, kind){
+  imapTestMsg.textContent = text;
+  imapTestMsg.className = 'imap-test-msg' + (kind ? ' ' + kind : '');
+}
+
+imapTestBtn.addEventListener('click', async () => {
+  const raw = v('imap').trim();
+  const sep = raw.indexOf(':');
+  if(sep < 1){
+    setTestMsg('Enter it as email:app-password first — e.g. you@gmail.com:abcdefghijklmnop', 'err');
+    return;
+  }
+  const email = raw.slice(0, sep).trim();
+  const password = raw.slice(sep + 1).trim();
+
+  imapTestBtn.disabled = true;
+  const label = imapTestBtn.textContent;
+  imapTestBtn.textContent = 'Testing…';
+  setTestMsg('Signing in…', '');
+
+  try{
+    const res = await fetch(IMAP_TEST_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    setTestMsg(data.message || 'Unexpected response.', data.ok ? 'ok' : 'err');
+  }catch(e){
+    setTestMsg("Couldn't reach the tester. Your details are probably fine — verify manually and carry on.", 'err');
+  }finally{
+    imapTestBtn.disabled = false;
+    imapTestBtn.textContent = label;
+  }
+});
+
+// ---- acknowledgement gate ---------------------------------------------
+const ackConfirm = document.getElementById('ackConfirm');
+const ackFieldset = document.getElementById('ackFieldset');
+
+function syncAck(){
+  copyBtn.disabled = !ackConfirm.checked;
+  if(ackConfirm.checked) ackFieldset.classList.remove('missing');
+}
+ackConfirm.addEventListener('change', syncAck);
+syncAck();
+
 async function copyBlock(){
+  if(!ackConfirm.checked){
+    ackFieldset.classList.add('missing');
+    ackFieldset.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    status.textContent = '⚠️ Tick the confirmation box above before copying your info.';
+    status.className = 'err';
+    return;
+  }
   const block = buildBlock();
   refreshPreview();
   let copied = false;
