@@ -290,10 +290,9 @@
       <div class="checkrow ack-row">
         <input type="checkbox" id="ackConfirm">
         <label for="ackConfirm">
-          I confirm the information above is accurate and belongs to me, and I authorize Swyft ACO to use it
-          to attempt purchases of TCG products on my behalf. I understand checkouts are attempted on a
-          best-effort basis with no guarantee of success, that my card is only charged when an order goes
-          through, and that I am responsible for any orders placed for me.
+          I confirm the information above is accurate and belongs to me. I authorize Swyft ACO to use it only
+          to attempt purchases on the retailer I selected above — nowhere else. Checkouts are best-effort with
+          no guarantee, and my card is only ever charged by that retailer.
         </label>
       </div>
     </fieldset>
@@ -563,7 +562,7 @@ function buildBlock(){
   }
 
   lines.push('', '--- ACKNOWLEDGEMENT ---',
-    `Info accurate + authorized to purchase on my behalf: ${boolStr('ackConfirm') ? 'AGREED' : 'NOT AGREED'}`);
+    `Info accurate + authorized to purchase on the selected retailer only: ${boolStr('ackConfirm') ? 'AGREED' : 'NOT AGREED'}`);
 
   return lines.join('\n');
 }
