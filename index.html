@@ -218,7 +218,7 @@
         </div>
       </div>
       <label>Discord User ID (optional)</label>
-      <input type="text" id="discordId" placeholder="e.g. 193267488341884928" inputmode="numeric" autocomplete="off">
+      <input type="text" id="discordId" placeholder="Ex. 193267488341884928" inputmode="numeric" autocomplete="off">
       <p class="hint">This is your numeric user ID, not your username. Enable <b>Developer Mode</b> in Discord (Settings → Advanced), then right-click your profile → <b>Copy User ID</b>.</p>
       <label>Only One Checkout?</label>
       <select id="onlyOneCheckout"><option value="TRUE">TRUE</option><option value="FALSE">FALSE</option></select>
@@ -227,7 +227,7 @@
     <fieldset>
       <legend class="sensitive">Card</legend>
       <label>Name on Card</label>
-      <input type="text" id="cardName">
+      <input type="text" id="cardName" placeholder="Ex. Alex Smith">
       <label>Card Type</label>
       <select id="cardType">
         <option>Visa</option>
@@ -238,15 +238,15 @@
       </select>
       <label>Card Number (no spaces)</label>
       <div class="toggle-pass">
-        <input type="password" id="cardNumber" placeholder="15-16 digits" inputmode="numeric" autocomplete="off">
+        <input type="password" id="cardNumber" placeholder="Ex. 4141414141414141" inputmode="numeric" autocomplete="off">
         <button type="button" class="pw-toggle" data-target="cardNumber">show</button>
       </div>
       <div class="row3">
-        <div><label>Exp. Month (MM)</label><input type="text" id="expMonth" placeholder="e.g. 08" inputmode="numeric" maxlength="2"></div>
-        <div><label>Exp. Year (YY)</label><input type="text" id="expYear" placeholder="e.g. 27" inputmode="numeric" maxlength="2"></div>
+        <div><label>Exp. Month (MM)</label><input type="text" id="expMonth" placeholder="Ex. 08" inputmode="numeric" maxlength="2"></div>
+        <div><label>Exp. Year (YY)</label><input type="text" id="expYear" placeholder="Ex. 27" inputmode="numeric" maxlength="2"></div>
         <div><label>CVV</label>
           <div class="toggle-pass">
-            <input type="password" id="cvv" placeholder="e.g. 123" inputmode="numeric" maxlength="4" autocomplete="off">
+            <input type="password" id="cvv" placeholder="Ex. 123" inputmode="numeric" maxlength="4" autocomplete="off">
             <button type="button" class="pw-toggle" data-target="cvv">show</button>
           </div>
         </div>
@@ -255,16 +255,17 @@
 
     <fieldset>
       <legend>Shipping (required)</legend>
-      <label>Shipping Name</label><input type="text" id="shipName" placeholder="e.g. Jon Park">
-      <label>Shipping Phone</label><input type="text" id="shipPhone" placeholder="e.g. 1234567890" inputmode="numeric" autocomplete="off">
-      <label>Shipping Address</label><input type="text" id="shipAddress" placeholder="e.g. 123 Main St, Apt 4">
+      <label>Shipping Name</label><input type="text" id="shipName" placeholder="Ex. Alex Smith">
+      <label>Shipping Phone</label><input type="text" id="shipPhone" placeholder="Ex. 1234567890" inputmode="numeric" autocomplete="off">
+      <label>Shipping Address 1</label><input type="text" id="shipAddress" placeholder="Ex. 123 Main St">
+      <label>Shipping Address 2 (optional)</label><input type="text" id="shipAddress2" placeholder="Ex. Apartment 205">
       <div class="row2">
-        <div><label>Post Code</label><input type="text" id="shipPost" placeholder="e.g. 90210"></div>
-        <div><label>City</label><input type="text" id="shipCity" placeholder="e.g. Los Angeles"></div>
+        <div><label>Post Code</label><input type="text" id="shipPost" placeholder="Ex. 90210"></div>
+        <div><label>City</label><input type="text" id="shipCity" placeholder="Ex. Los Angeles"></div>
       </div>
       <div class="row2">
-        <div><label>State (e.g. CA)</label><input type="text" id="shipState" placeholder="e.g. CA"></div>
-        <div><label>Country (e.g. USA)</label><input type="text" id="shipCountry" placeholder="e.g. USA"></div>
+        <div><label>State (Ex. CA)</label><input type="text" id="shipState" placeholder="Ex. CA"></div>
+        <div><label>Country (Ex. USA)</label><input type="text" id="shipCountry" placeholder="Ex. USA"></div>
       </div>
       <div class="checkrow">
         <input type="checkbox" id="sameBilling" checked>
@@ -274,16 +275,17 @@
 
     <fieldset id="billingFields">
       <legend>Billing (only if different)</legend>
-      <label>Billing Name</label><input type="text" id="billName" placeholder="e.g. Jon Park">
-      <label>Billing Phone</label><input type="text" id="billPhone" placeholder="e.g. 1234567890" inputmode="numeric" autocomplete="off">
-      <label>Billing Address</label><input type="text" id="billAddress" placeholder="e.g. 123 Main St, Apt 4">
+      <label>Billing Name</label><input type="text" id="billName" placeholder="Ex. Alex Smith">
+      <label>Billing Phone</label><input type="text" id="billPhone" placeholder="Ex. 1234567890" inputmode="numeric" autocomplete="off">
+      <label>Billing Address 1</label><input type="text" id="billAddress" placeholder="Ex. 123 Main St">
+      <label>Billing Address 2 (optional)</label><input type="text" id="billAddress2" placeholder="Ex. Apartment 205">
       <div class="row2">
-        <div><label>Post Code</label><input type="text" id="billPost" placeholder="e.g. 90210"></div>
-        <div><label>City</label><input type="text" id="billCity" placeholder="e.g. Los Angeles"></div>
+        <div><label>Post Code</label><input type="text" id="billPost" placeholder="Ex. 90210"></div>
+        <div><label>City</label><input type="text" id="billCity" placeholder="Ex. Los Angeles"></div>
       </div>
       <div class="row2">
-        <div><label>State</label><input type="text" id="billState" placeholder="e.g. CA"></div>
-        <div><label>Country</label><input type="text" id="billCountry" placeholder="e.g. USA"></div>
+        <div><label>State</label><input type="text" id="billState" placeholder="Ex. CA"></div>
+        <div><label>Country</label><input type="text" id="billCountry" placeholder="Ex. USA"></div>
       </div>
     </fieldset>
 
@@ -390,8 +392,8 @@ const RETAILER_NAMES = {pkc:'Pokémon Center', sams:"Sam's Club", amazon:'Amazon
 const FIELD_IDS = ['email','discordId','onlyOneCheckout',
   'amazonPassword','bandaiPassword','riftboundPassword',
   'cardName','cardType','cardNumber','expMonth','expYear','cvv',
-  'shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry',
-  'billName','billPhone','billAddress','billPost','billCity','billState','billCountry',
+  'shipName','shipPhone','shipAddress','shipAddress2','shipPost','shipCity','shipState','shipCountry',
+  'billName','billPhone','billAddress','billAddress2','billPost','billCity','billState','billCountry',
   'samsEmail','samsPassword','imap'];
 const CHECK_IDS = ['sameBilling','samsHasMembership','imapConfirm'];
 const FIELD_DEFAULTS = {onlyOneCheckout:'TRUE', cardType:'Visa', sameBilling:true};
@@ -400,9 +402,9 @@ const FIELD_LABELS = {
   email:'Email/Account Email', amazonPassword:'Amazon Password', bandaiPassword:'Bandai Password',
   riftboundPassword:'Riftbound Password', cardName:'Name on Card', cardNumber:'Card Number',
   expMonth:'Exp. Month', expYear:'Exp. Year', cvv:'CVV', shipName:'Shipping Name',
-  shipPhone:'Shipping Phone', shipAddress:'Shipping Address', shipPost:'Shipping Post Code',
+  shipPhone:'Shipping Phone', shipAddress:'Shipping Address 1', shipAddress2:'Shipping Address 2', shipPost:'Shipping Post Code',
   shipCity:'Shipping City', shipState:'Shipping State', shipCountry:'Shipping Country',
-  billName:'Billing Name', billPhone:'Billing Phone', billAddress:'Billing Address',
+  billName:'Billing Name', billPhone:'Billing Phone', billAddress:'Billing Address 1', billAddress2:'Billing Address 2',
   billPost:'Billing Post Code', billCity:'Billing City', billState:'Billing State',
   billCountry:'Billing Country', samsEmail:"Sam's Email", samsPassword:"Sam's Password",
   imap:'IMAP (email:app-password)',
@@ -535,18 +537,20 @@ function buildBlockFor(key, data){
       '--- SHIPPING (required) ---',
       `Shipping Name: ${fv(data,'shipName')}`,
       `Shipping Phone (no spaces/dashes): ${fv(data,'shipPhone')}`,
-      `Shipping Address: ${fv(data,'shipAddress')}`,
+      `Shipping Address 1: ${fv(data,'shipAddress')}`,
+      `Shipping Address 2 (optional): ${fv(data,'shipAddress2')}`,
       `Shipping Post Code: ${fv(data,'shipPost')}`,
       `Shipping City: ${fv(data,'shipCity')}`,
-      `Shipping State (e.g. CA): ${fv(data,'shipState')}`,
-      `Shipping Country (e.g. USA): ${fv(data,'shipCountry')}`,'',
+      `Shipping State (Ex. CA): ${fv(data,'shipState')}`,
+      `Shipping Country (Ex. USA): ${fv(data,'shipCountry')}`,'',
       `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
     ];
     if(!same){
       lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
         `Billing Name: ${fv(data,'billName')}`,
         `Billing Phone: ${fv(data,'billPhone')}`,
-        `Billing Address: ${fv(data,'billAddress')}`,
+        `Billing Address 1: ${fv(data,'billAddress')}`,
+        `Billing Address 2 (optional): ${fv(data,'billAddress2')}`,
         `Billing Post Code: ${fv(data,'billPost')}`,
         `Billing City: ${fv(data,'billCity')}`,
         `Billing State: ${fv(data,'billState')}`,
@@ -570,7 +574,8 @@ function buildBlockFor(key, data){
       '--- SHIPPING (required) ---',
       `Shipping Name: ${fv(data,'shipName')}`,
       `Shipping Phone: ${fv(data,'shipPhone')}`,
-      `Shipping Address: ${fv(data,'shipAddress')}`,
+      `Shipping Address 1: ${fv(data,'shipAddress')}`,
+      `Shipping Address 2 (optional): ${fv(data,'shipAddress2')}`,
       `Shipping Post Code: ${fv(data,'shipPost')}`,
       `Shipping City: ${fv(data,'shipCity')}`,
       `Shipping State: ${fv(data,'shipState')}`,
@@ -581,7 +586,8 @@ function buildBlockFor(key, data){
       lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
         `Billing Name: ${fv(data,'billName')}`,
         `Billing Phone: ${fv(data,'billPhone')}`,
-        `Billing Address: ${fv(data,'billAddress')}`,
+        `Billing Address 1: ${fv(data,'billAddress')}`,
+        `Billing Address 2 (optional): ${fv(data,'billAddress2')}`,
         `Billing Post Code: ${fv(data,'billPost')}`,
         `Billing City: ${fv(data,'billCity')}`,
         `Billing State: ${fv(data,'billState')}`,
@@ -612,18 +618,20 @@ function buildBlockFor(key, data){
       '--- SHIPPING (required) ---',
       `Shipping Name: ${fv(data,'shipName')}`,
       `Shipping Phone (no spaces/dashes): ${fv(data,'shipPhone')}`,
-      `Shipping Address: ${fv(data,'shipAddress')}`,
+      `Shipping Address 1: ${fv(data,'shipAddress')}`,
+      `Shipping Address 2 (optional): ${fv(data,'shipAddress2')}`,
       `Shipping Post Code: ${fv(data,'shipPost')}`,
       `Shipping City: ${fv(data,'shipCity')}`,
-      `Shipping State (e.g. CA): ${fv(data,'shipState')}`,
-      `Shipping Country (e.g. USA): ${fv(data,'shipCountry')}`,'',
+      `Shipping State (Ex. CA): ${fv(data,'shipState')}`,
+      `Shipping Country (Ex. USA): ${fv(data,'shipCountry')}`,'',
       `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
     ];
     if(!same){
       lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
         `Billing Name: ${fv(data,'billName')}`,
         `Billing Phone: ${fv(data,'billPhone')}`,
-        `Billing Address: ${fv(data,'billAddress')}`,
+        `Billing Address 1: ${fv(data,'billAddress')}`,
+        `Billing Address 2 (optional): ${fv(data,'billAddress2')}`,
         `Billing Post Code: ${fv(data,'billPost')}`,
         `Billing City: ${fv(data,'billCity')}`,
         `Billing State: ${fv(data,'billState')}`,
@@ -651,18 +659,20 @@ function buildBlockFor(key, data){
       '--- SHIPPING (required) ---',
       `Shipping Name: ${fv(data,'shipName')}`,
       `Shipping Phone (no spaces/dashes): ${fv(data,'shipPhone')}`,
-      `Shipping Address: ${fv(data,'shipAddress')}`,
+      `Shipping Address 1: ${fv(data,'shipAddress')}`,
+      `Shipping Address 2 (optional): ${fv(data,'shipAddress2')}`,
       `Shipping Post Code: ${fv(data,'shipPost')}`,
       `Shipping City: ${fv(data,'shipCity')}`,
-      `Shipping State (e.g. CA): ${fv(data,'shipState')}`,
-      `Shipping Country (e.g. USA): ${fv(data,'shipCountry')}`,'',
+      `Shipping State (Ex. CA): ${fv(data,'shipState')}`,
+      `Shipping Country (Ex. USA): ${fv(data,'shipCountry')}`,'',
       `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
     ];
     if(!same){
       lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
         `Billing Name: ${fv(data,'billName')}`,
         `Billing Phone: ${fv(data,'billPhone')}`,
-        `Billing Address: ${fv(data,'billAddress')}`,
+        `Billing Address 1: ${fv(data,'billAddress')}`,
+        `Billing Address 2 (optional): ${fv(data,'billAddress2')}`,
         `Billing Post Code: ${fv(data,'billPost')}`,
         `Billing City: ${fv(data,'billCity')}`,
         `Billing State: ${fv(data,'billState')}`,
@@ -687,18 +697,20 @@ function buildBlockFor(key, data){
       '--- SHIPPING (required) ---',
       `Shipping Name: ${fv(data,'shipName')}`,
       `Shipping Phone (no spaces/dashes): ${fv(data,'shipPhone')}`,
-      `Shipping Address: ${fv(data,'shipAddress')}`,
+      `Shipping Address 1: ${fv(data,'shipAddress')}`,
+      `Shipping Address 2 (optional): ${fv(data,'shipAddress2')}`,
       `Shipping Post Code: ${fv(data,'shipPost')}`,
       `Shipping City: ${fv(data,'shipCity')}`,
-      `Shipping State (e.g. CA): ${fv(data,'shipState')}`,
-      `Shipping Country (e.g. USA): ${fv(data,'shipCountry')}`,'',
+      `Shipping State (Ex. CA): ${fv(data,'shipState')}`,
+      `Shipping Country (Ex. USA): ${fv(data,'shipCountry')}`,'',
       `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
     ];
     if(!same){
       lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
         `Billing Name: ${fv(data,'billName')}`,
         `Billing Phone: ${fv(data,'billPhone')}`,
-        `Billing Address: ${fv(data,'billAddress')}`,
+        `Billing Address 1: ${fv(data,'billAddress')}`,
+        `Billing Address 2 (optional): ${fv(data,'billAddress2')}`,
         `Billing Post Code: ${fv(data,'billPost')}`,
         `Billing City: ${fv(data,'billCity')}`,
         `Billing State: ${fv(data,'billState')}`,
@@ -752,7 +764,7 @@ imapTestBtn.addEventListener('click', async () => {
   const raw = v('imap').trim();
   const sep = raw.indexOf(':');
   if(sep < 1){
-    setTestMsg('Enter it as email:app-password first — e.g. you@gmail.com:abcdefghijklmnop', 'err');
+    setTestMsg('Enter it as email:app-password first — Ex. you@gmail.com:abcdefghijklmnop', 'err');
     return;
   }
   const email = raw.slice(0, sep).trim();
@@ -951,6 +963,20 @@ digitsOnly('cardNumber', 16);
 digitsOnly('expMonth', 2);
 digitsOnly('expYear', 2);
 digitsOnly('cvv', 4);
+digitsOnly('shipPost');
+digitsOnly('billPost');
+
+// City/State/Country: letters + spaces/hyphens/periods/apostrophes only --
+// covers names like "St. Louis" or "Martha's Vineyard" -- no digits, since
+// no real city, state, or country name contains one.
+function lettersOnly(id){
+  const el = document.getElementById(id);
+  el.addEventListener('input', ()=>{
+    const cleaned = el.value.replace(/[^a-zA-Z\s'.-]/g, '');
+    if(cleaned !== el.value) el.value = cleaned;
+  });
+}
+['shipCity','shipState','shipCountry','billCity','billState','billCountry'].forEach(lettersOnly);
 
 updateVisibility();
 refreshPreview();
