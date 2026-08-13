@@ -642,7 +642,6 @@ const ackConfirm = document.getElementById('ackConfirm');
 const ackFieldset = document.getElementById('ackFieldset');
 
 function syncAck(){
-  copyBtn.disabled = !ackConfirm.checked;
   if(ackConfirm.checked) ackFieldset.classList.remove('missing');
 }
 ackConfirm.addEventListener('change', syncAck);
