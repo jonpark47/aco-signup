@@ -131,6 +131,7 @@
     <button type="button" data-retailer="sams">🟡 Sam's Club</button>
     <button type="button" data-retailer="amazon">🟠 Amazon</button>
     <button type="button" data-retailer="bandai">🟣 Bandai</button>
+    <button type="button" data-retailer="riftbound">🟢 Riftbound</button>
   </div>
 
   <form id="signupForm">
@@ -151,6 +152,13 @@
         <div class="toggle-pass">
           <input type="password" id="bandaiPassword">
           <button type="button" class="pw-toggle" data-target="bandaiPassword">show</button>
+        </div>
+      </div>
+      <div id="riftboundPwWrap" style="display:none">
+        <label>Riftbound Account Password</label>
+        <div class="toggle-pass">
+          <input type="password" id="riftboundPassword">
+          <button type="button" class="pw-toggle" data-target="riftboundPassword">show</button>
         </div>
       </div>
       <label>Discord User ID (optional)</label>
@@ -290,14 +298,16 @@ document.querySelectorAll('.retailer-select button').forEach(btn=>{
 const EMAIL_LABELS = {
   amazon: 'Amazon Account Email',
   bandai: 'Bandai Account Email',
+  riftbound: 'Riftbound Account Email',
 };
 
 function updateVisibility(){
   document.getElementById('amazonPwWrap').style.display = retailer==='amazon' ? 'block' : 'none';
   document.getElementById('bandaiPwWrap').style.display = retailer==='bandai' ? 'block' : 'none';
+  document.getElementById('riftboundPwWrap').style.display = retailer==='riftbound' ? 'block' : 'none';
   document.getElementById('emailLabel').textContent = EMAIL_LABELS[retailer] || 'Email Address';
   document.getElementById('samsMembership').style.display = retailer==='sams' ? 'block' : 'none';
-  document.getElementById('imapFields').style.display = (retailer==='sams' || retailer==='amazon') ? 'block' : 'none';
+  document.getElementById('imapFields').style.display = (retailer==='sams' || retailer==='amazon' || retailer==='riftbound') ? 'block' : 'none';
 }
 updateVisibility();
 
@@ -472,6 +482,45 @@ function buildBlock(){
         `Billing State: ${v('billState')}`,
         `Billing Country: ${v('billCountry')}`);
     }
+  }
+
+  if(retailer==='riftbound'){
+    lines = [
+      '=== RIFTBOUND PROFILE ===','',
+      `Riftbound Account Email: ${v('email')}`,
+      `Riftbound Account Password: ${v('riftboundPassword')}`,
+      `Discord User ID (optional): ${v('discordId')}`,
+      `Only One Checkout (TRUE/FALSE): ${v('onlyOneCheckout')}`,'',
+      '--- CARD ---',
+      `Name on Card: ${v('cardName')}`,
+      `Card Type (Visa/MasterCard): ${v('cardType')}`,
+      `Card Number (NO SPACES): ${v('cardNumber')}`,
+      `Expiration Month (MM): ${v('expMonth')}`,
+      `Expiration Year (YY): ${v('expYear')}`,
+      `CVV: ${v('cvv')}`,'',
+      '--- SHIPPING (required) ---',
+      `Shipping Name: ${v('shipName')}`,
+      `Shipping Phone (no spaces/dashes): ${v('shipPhone')}`,
+      `Shipping Address: ${v('shipAddress')}`,
+      `Shipping Post Code: ${v('shipPost')}`,
+      `Shipping City: ${v('shipCity')}`,
+      `Shipping State (e.g. CA): ${v('shipState')}`,
+      `Shipping Country (e.g. USA): ${v('shipCountry')}`,'',
+      `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
+    ];
+    if(!same){
+      lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
+        `Billing Name: ${v('billName')}`,
+        `Billing Phone: ${v('billPhone')}`,
+        `Billing Address: ${v('billAddress')}`,
+        `Billing Post Code: ${v('billPost')}`,
+        `Billing City: ${v('billCity')}`,
+        `Billing State: ${v('billState')}`,
+        `Billing Country: ${v('billCountry')}`);
+    }
+    lines.push('', '--- EMAIL ACCESS (needed for OTP / order verification codes) ---',
+      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${v('imap')}`,
+      `Riftbound email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${boolStr('imapConfirm') ? 'I UNDERSTAND' : ''}`);
   }
 
   return lines.join('\n');
