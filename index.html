@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Swyft ACO — Sign-Up</title>
+<title>Swyft ACO · Sign-Up</title>
 <style>
   :root{
     --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --border:#2a2f3a;
@@ -67,7 +67,6 @@
     flex:1; min-width:180px; text-align:center; padding:14px; border-radius:10px; border:none;
     font-weight:700; font-size:.95rem; cursor:pointer; text-decoration:none;
   }
-  #copyBtn{background:var(--accent); color:#fff}
   #autoLinkBtn{
     background:linear-gradient(120deg, var(--accent), var(--accent2)); color:#fff;
     box-shadow:0 0 18px rgba(124,92,255,.3);
@@ -78,7 +77,6 @@
   #autoLinkResult.ok{background:rgba(61,220,132,.12); border:1px solid rgba(61,220,132,.4); color:var(--text)}
   #autoLinkResult.ok a{color:var(--ok); font-weight:700}
   #autoLinkResult.err{background:rgba(255,92,92,.12); border:1px solid rgba(255,92,92,.4); color:var(--text)}
-  #otsLink{background:var(--panel2); border:1px solid var(--border); color:var(--text)}
   #status{margin-top:12px; font-size:.9rem; min-height:1.4em; font-weight:700; padding:0; border-radius:8px; transition:padding .15s}
   #status.ok{color:#08301c; background:var(--ok); padding:10px 14px}
   #status.err{color:#3a0d0d; background:var(--danger); padding:10px 14px}
@@ -106,7 +104,6 @@
     .checkrow input[type=checkbox]{width:24px; height:24px; min-width:24px}
   }
   #ackFieldset.missing{border-color:#b3261e}
-  #copyBtn:disabled{opacity:.55; cursor:not-allowed}
   #errorBanner{display:none; background:var(--danger); color:#3a0d0d; padding:12px 14px; border-radius:10px; margin-bottom:20px; font-size:.85rem; font-weight:700}
   .footer-note{margin-top:28px; font-size:.75rem; color:var(--muted); line-height:1.6}
 
@@ -142,15 +139,6 @@
   }
   .retailer-select button.done .done-dot{display:block}
 
-  #nextSteps{
-    display:none; margin-top:14px; background:linear-gradient(120deg, rgba(61,220,132,.10), rgba(91,140,255,.08));
-    border:1px solid rgba(61,220,132,.4); border-radius:12px; padding:16px 18px;
-  }
-  #nextSteps.show{display:block}
-  #nextSteps h3{margin:0 0 10px; font-size:.95rem; color:var(--ok)}
-  #nextSteps ol{margin:0; padding-left:22px; font-size:.88rem; line-height:1.7; color:var(--text)}
-  #nextSteps li b{color:var(--ok)}
-  #nextSteps .warn{margin:10px 0 0; font-size:.8rem; color:var(--danger); font-weight:600}
 
   .ai-footer-badge{
     display:inline-flex; align-items:center; gap:6px; margin-top:14px;
@@ -163,9 +151,9 @@
 </head>
 <body>
 <div class="wrap">
-  <div id="errorBanner">⚠️ A script error occurred — some features may not work. Details logged to the browser console (F12).</div>
-  <h1>⚡ Swyft ACO — Sign-Up</h1>
-  <p class="sub">Fill in your info below, then follow the two steps at the bottom. Nothing here is sent anywhere or saved — it only builds the text block you paste into onetimesecret.com yourself.</p>
+  <div id="errorBanner">⚠️ A script error occurred. Some features may not work. Details logged to the browser console (F12).</div>
+  <h1>⚡ Swyft ACO · Sign-Up</h1>
+  <p class="sub">Fill in your info below, then click Generate Secure Link. It builds your onetimesecret link for you in one step.</p>
 
   <div class="trust-bar">
     <span class="trust-chip live"><span class="pulse-dot"></span>LIVE &middot; AI MONITORED</span>
@@ -175,13 +163,12 @@
   </div>
 
   <div class="steps">
-    <b>1.</b> Pick a retailer and fill in every field below. Signing up for more than one? Just switch tabs — nothing is lost.<br>
-    <b>2.</b> Click <b>Copy Info Block</b> (combines every retailer you filled in, and checks nothing required is missing).<br>
-    <b>3.</b> Click <b>Open onetimesecret.com</b>, paste (Ctrl+V) into the box there, click Create Secret.<br>
-    <b>4.</b> Copy the LINK it gives you, then paste that into your sign-up ticket.
+    <b>1.</b> Pick a retailer and fill in every field below. Signing up for more than one? Just switch tabs, nothing is lost.<br>
+    <b>2.</b> Click <b>Generate Secure Link</b>. It combines every retailer you filled in, checks nothing required is missing, and creates your onetimesecret link for you.<br>
+    <b>3.</b> Paste that link into your sign-up ticket.
   </div>
 
-  <p class="hint" style="margin:-4px 0 10px">Fill out one retailer, switch to another to add it too — your info for each is kept. <b>Copy Info Block</b> combines every retailer you've filled in.</p>
+  <p class="hint" style="margin:-4px 0 10px">Fill out one retailer, switch to another to add it too, your info for each is kept. <b>Generate Secure Link</b> combines every retailer you've filled in.</p>
   <div class="retailer-select">
     <button type="button" class="active" data-retailer="pkc">🔵 Pokémon Center<span class="done-dot">✓</span></button>
     <button type="button" data-retailer="sams">🟡 Sam's Club<span class="done-dot">✓</span></button>
@@ -306,8 +293,8 @@
     </fieldset>
 
     <fieldset id="imapFields" style="display:none">
-      <legend class="sensitive">Email Access (IMAP — for OTP / order codes)</legend>
-      <a class="imap-link" href="https://docs.google.com/document/d/1LWISs1wpY6LSiIA6oMbo_Xwkwx8XXyibuAdWycKz9YQ/edit?usp=sharing" target="_blank" rel="noopener">📖 IMAP app-password guide — click here for step-by-step instructions</a>
+      <legend class="sensitive">Email Access (IMAP, for OTP / order codes)</legend>
+      <a class="imap-link" href="https://docs.google.com/document/d/1LWISs1wpY6LSiIA6oMbo_Xwkwx8XXyibuAdWycKz9YQ/edit?usp=sharing" target="_blank" rel="noopener">📖 IMAP app-password guide, click here for step-by-step instructions</a>
       <label>IMAP (email:app-password)</label>
       <div class="toggle-pass">
         <input type="password" id="imap" placeholder="myemail@gmail.com:asdfasdfasdfasdf" autocomplete="off">
@@ -320,7 +307,7 @@
 
       <div class="imap-test">
         <button type="button" id="imapTestBtn">🔌 Test my IMAP login</button>
-        <span id="imapTestMsg" class="imap-test-msg">Recommended — checks your app password actually works before you submit.</span>
+        <span id="imapTestMsg" class="imap-test-msg">Recommended. Checks your app password actually works before you submit.</span>
       </div>
       <p class="imap-test-note">
         Testing sends just that email and app password to our own server to attempt a single sign-in.
@@ -335,7 +322,7 @@
         <input type="checkbox" id="ackConfirm">
         <label for="ackConfirm">
           I confirm the information above is accurate and belongs to me. I authorize Swyft ACO to use it only
-          to attempt purchases on the retailer I selected above — nowhere else. Checkouts are best-effort with
+          to attempt purchases on the retailer I selected above, nowhere else. Checkouts are best-effort with
           no guarantee, and my card is only ever charged by that retailer.
         </label>
       </div>
@@ -345,35 +332,18 @@
       <button type="button" id="autoLinkBtn">✨ Generate Secure Link (1-Click)</button>
     </div>
     <div id="autoLinkResult"></div>
-
-    <p class="hint" style="margin:16px 0 8px">Prefer to do it yourself on onetimesecret.com? Use the manual steps instead:</p>
-    <div class="actions">
-      <button type="button" id="copyBtn">📋 Copy Info Block</button>
-      <a id="otsLink" href="https://onetimesecret.com" target="_blank" rel="noopener">🔗 Open onetimesecret.com</a>
-    </div>
     <div id="status"></div>
 
-    <div id="nextSteps">
-      <h3>✅ Copied — here's what's left</h3>
-      <ol>
-        <li>Switch to the <b>onetimesecret.com</b> tab that just opened, paste (Ctrl+V), click <b>Create Secret</b>.</li>
-        <li><b>Copy the LINK it gives you</b> — it looks like <code>https://onetimesecret.com/secret/...</code></li>
-        <li>Come back to this tab (or your ticket) and paste <b>that link</b> — not your raw info.</li>
-      </ol>
-      <p class="warn">⚠️ This panel stays open — no need to remember the steps, just come back to this tab.</p>
-    </div>
-
-    <label style="margin-top:16px">Info block preview (also selectable/copyable by hand) — shows the retailer you're currently viewing</label>
+    <label style="margin-top:16px">Info preview. Shows the retailer you're currently viewing.</label>
     <textarea id="previewBox" rows="8" readonly onclick="this.select()"></textarea>
   </form>
 
   <p class="footer-note">
-    This page runs entirely in your browser. Nothing you type is logged or stored anywhere by default — the
-    <strong>Copy Info Block</strong> button only copies to your own clipboard, exactly like the manual process.
-    Two optional buttons briefly touch our server, never write anything to disk, and never log the content: pressing
-    <strong>Test my IMAP login</strong> sends only that email and app password for a single sign-in attempt, and pressing
-    <strong>Generate Secure Link</strong> relays your filled-in info straight through to onetimesecret.com to create the
-    link for you, the same trip it would take if you pasted it there yourself. Closing this tab clears everything.
+    This page runs in your browser, and two things briefly touch our server. Neither writes anything to disk or logs
+    the content. Pressing <strong>Test my IMAP login</strong> sends only that email and app password for a single
+    sign-in attempt. Pressing <strong>Generate Secure Link</strong> relays your filled-in info straight through to
+    onetimesecret.com to create the link for you, the same trip it would take if you pasted it there yourself.
+    Closing this tab clears everything.
   </p>
   <div class="ai-footer-badge">&#10024; Built &amp; Maintained by AI</div>
 </div>
@@ -594,11 +564,11 @@ function buildBlockFor(key, data){
         `Billing Country: ${fv(data,'billCountry')}`);
     }
     lines.push('', "--- SAM'S MEMBERSHIP ---",
-      `I HAVE a membership (no membership = bot buys one, NOT the product) — type YES: ${fc(data,'samsHasMembership') ? 'YES' : ''}`,
+      `I HAVE a membership (no membership = bot buys one, NOT the product), type YES: ${fc(data,'samsHasMembership') ? 'YES' : ''}`,
       `Sam's Email (MUST match your Sam's account): ${fv(data,'samsEmail')}`,
       `Sam's Password: ${fv(data,'samsPassword')}`,
-      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
-      `Sam's email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
+      `IMAP (email:app-password), see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
+      `Sam's email + IMAP email MUST match or you won't be ran, type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
   }
 
   if(key==='amazon'){
@@ -638,8 +608,8 @@ function buildBlockFor(key, data){
         `Billing Country: ${fv(data,'billCountry')}`);
     }
     lines.push('', '--- EMAIL ACCESS (needed for OTP / order verification codes) ---',
-      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
-      `Amazon email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
+      `IMAP (email:app-password), see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
+      `Amazon email + IMAP email MUST match or you won't be ran, type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
   }
 
   if(key==='bandai'){
@@ -717,8 +687,8 @@ function buildBlockFor(key, data){
         `Billing Country: ${fv(data,'billCountry')}`);
     }
     lines.push('', '--- EMAIL ACCESS (needed for OTP / order verification codes) ---',
-      `IMAP (email:app-password) — see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
-      `Riftbound email + IMAP email MUST match or you won't be ran — type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
+      `IMAP (email:app-password), see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
+      `Riftbound email + IMAP email MUST match or you won't be ran, type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
   }
 
   return lines.join('\n');
@@ -738,17 +708,7 @@ function refreshPreview(){ previewBox.value = buildBlockFor(retailer, snapshotCu
 
 document.getElementById('signupForm').addEventListener('input', ()=>{ refreshPreview(); updateRetailerBadges(); });
 
-const copyBtn = document.getElementById('copyBtn');
 const status = document.getElementById('status');
-
-function legacyCopy(text){
-  previewBox.value = text;
-  previewBox.focus();
-  previewBox.select();
-  previewBox.setSelectionRange(0, text.length);
-  const ok = document.execCommand && document.execCommand('copy');
-  return !!ok;
-}
 
 // ---- IMAP tester -------------------------------------------------------
 const IMAP_TEST_URL = 'https://163-192-27-154.sslip.io/imap-test';
@@ -764,7 +724,7 @@ imapTestBtn.addEventListener('click', async () => {
   const raw = v('imap').trim();
   const sep = raw.indexOf(':');
   if(sep < 1){
-    setTestMsg('Enter it as email:app-password first — Ex. you@gmail.com:abcdefghijklmnop', 'err');
+    setTestMsg('Enter it as email:app-password first. Ex. you@gmail.com:abcdefghijklmnop', 'err');
     return;
   }
   const email = raw.slice(0, sep).trim();
@@ -784,7 +744,7 @@ imapTestBtn.addEventListener('click', async () => {
     const data = await res.json();
     setTestMsg(data.message || 'Unexpected response.', data.ok ? 'ok' : 'err');
   }catch(e){
-    setTestMsg("Couldn't reach the tester. Your details are probably fine — verify manually and carry on.", 'err');
+    setTestMsg("Couldn't reach the tester. Your details are probably fine, verify manually and carry on.", 'err');
   }finally{
     imapTestBtn.disabled = false;
     imapTestBtn.textContent = label;
@@ -800,72 +760,6 @@ function syncAck(){
 }
 ackConfirm.addEventListener('change', syncAck);
 syncAck();
-
-const nextSteps = document.getElementById('nextSteps');
-
-async function copyBlock(){
-  nextSteps.classList.remove('show');
-
-  if(!ackConfirm.checked){
-    ackFieldset.classList.add('missing');
-    ackFieldset.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    status.textContent = '⚠️ Tick the confirmation box above before copying your info.';
-    status.className = 'err';
-    return;
-  }
-
-  const all = allProfilesIncludingCurrent();
-  updateRetailerBadges();
-  const started = RETAILERS.filter(k => !isBlankProfile(all[k]));
-
-  if(started.length === 0){
-    status.textContent = '⚠️ Fill out at least one retailer above first.';
-    status.className = 'err';
-    return;
-  }
-
-  const errors = [];
-  started.forEach(k => {
-    const missing = validateProfile(k, all[k]);
-    if(missing.length) errors.push(`${RETAILER_NAMES[k]} is missing: ${missing.join(', ')}`);
-  });
-  if(errors.length){
-    status.textContent = '⚠️ ' + errors.join('  |  ');
-    status.className = 'err';
-    return;
-  }
-
-  const combined = started.map(k => buildBlockFor(k, all[k])).join('\n\n' + '='.repeat(44) + '\n\n')
-    + '\n\n--- ACKNOWLEDGEMENT ---\n'
-    + `Info accurate + authorized to purchase on the retailer(s) above only: AGREED`;
-
-  previewBox.value = combined;
-  let copied = false;
-
-  if(navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext){
-    try{ await navigator.clipboard.writeText(combined); copied = true; }catch(e){ copied = false; }
-  }
-  if(!copied){
-    try{ copied = legacyCopy(combined); }catch(e){ copied = false; }
-  }
-
-  const names = started.map(k => RETAILER_NAMES[k]).join(', ');
-  if(copied){
-    status.textContent = `✅ Copied (${names})! Now click "Open onetimesecret.com" below.`;
-    status.className = 'ok';
-    const original = copyBtn.textContent;
-    copyBtn.textContent = '✅ Copied!';
-    setTimeout(()=>{ copyBtn.textContent = original; }, 2000);
-    nextSteps.classList.add('show');
-  }else{
-    status.textContent = '⚠️ Auto-copy was blocked by your browser. The box below is selected — press Ctrl+C (or Cmd+C on Mac) now.';
-    status.className = 'err';
-    previewBox.focus();
-    previewBox.select();
-  }
-}
-
-copyBtn.addEventListener('click', copyBlock);
 
 // ---- one-click secure link (server-side proxy -- see vps/onetimesecret_proxy.py) ----
 const AUTO_LINK_URL = 'https://163-192-27-154.sslip.io/onetimesecret-create';
@@ -935,11 +829,11 @@ async function generateSecureLink(){
         + `<a href="${data.url}" target="_blank" rel="noopener">${data.url}</a>`;
       autoLinkResult.classList.add('show', 'ok');
     }else{
-      autoLinkResult.textContent = '⚠️ ' + (data.message || 'Could not generate a link.') + ' Use the manual steps below instead.';
+      autoLinkResult.textContent = '⚠️ ' + (data.message || 'Could not generate a link.') + ' Please try again in a moment.';
       autoLinkResult.classList.add('show', 'err');
     }
   }catch(e){
-    autoLinkResult.textContent = "⚠️ Couldn't reach the link generator. Use the manual steps below instead.";
+    autoLinkResult.textContent = "⚠️ Couldn't reach the link generator. Please try again in a moment, or open a ticket and let us know if it keeps failing.";
     autoLinkResult.classList.add('show', 'err');
   }finally{
     autoLinkBtn.disabled = false;
