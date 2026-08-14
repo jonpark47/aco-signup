@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swyft ACO · Amazon 2FA Key Guide</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --border:#2a2f3a;
+    --text:#e8eaed; --muted:#9aa3b2; --accent:#5b8cff; --accent2:#7c5cff;
+    --danger:#ff5c5c; --ok:#3ddc84;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(180deg,#0f1115,#12151c); color:var(--text);
+    min-height:100vh; padding:32px 16px 80px;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{font-size:1.5rem; margin:0 0 6px}
+  .sub{color:var(--muted); margin:0 0 28px; font-size:.95rem; line-height:1.6}
+  .why{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:28px; font-size:.9rem; line-height:1.6; color:var(--muted);
+  }
+  .why b{color:var(--text)}
+  .step{
+    border:1px solid var(--border); border-radius:12px; background:var(--panel);
+    padding:20px 22px; margin-bottom:18px;
+  }
+  .step-num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--accent);
+    color:#fff; font-weight:700; font-size:.85rem; margin-right:10px; flex-shrink:0;
+  }
+  .step-head{display:flex; align-items:center; margin-bottom:10px}
+  .step-title{font-weight:700; font-size:1rem}
+  .step p{margin:8px 0 0; font-size:.9rem; line-height:1.65; color:var(--text)}
+  .step ul{margin:8px 0 0; padding-left:20px; font-size:.9rem; line-height:1.7; color:var(--text)}
+  .step img{
+    display:block; width:100%; max-width:640px; margin:14px auto 0;
+    border-radius:8px; border:1px solid var(--border);
+  }
+  .callout{
+    margin-top:14px; padding:12px 14px; border-radius:8px; font-size:.88rem; line-height:1.6;
+    background:rgba(255,92,92,.12); border:1px solid rgba(255,92,92,.4); color:var(--text);
+  }
+  .callout b{color:var(--danger)}
+  .keyhint{
+    margin-top:14px; padding:12px 14px; border-radius:8px; font-size:.85rem;
+    background:var(--panel2); border:1px solid var(--border); color:var(--muted);
+    font-family:ui-monospace,Consolas,monospace; word-break:break-all;
+  }
+  .keyhint b{display:block; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--text); margin-bottom:6px; font-size:.82rem}
+  .back{
+    display:inline-block; margin-top:28px; padding:12px 20px; border-radius:10px;
+    background:var(--accent); color:#fff; text-decoration:none; font-weight:700; font-size:.9rem;
+  }
+  .back:hover{background:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔑 Finding Your Amazon 2FA Authenticator Key</h1>
+  <p class="sub">Follow these steps exactly, then paste the key into the <b>Amazon 2FA Authenticator Key</b> field on the sign-up form.</p>
+
+  <div class="why">
+    <b>Why this is needed:</b> Amazon requires two-step verification (2FA) on the account, and Stellar needs the actual authenticator key (not just a one-time code) so it can generate fresh login codes automatically every time it checks out for you.
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span><span class="step-title">Sign into your Amazon account, then open Account</span></div>
+    <p>Click <b>Account &amp; Lists</b> in the top right, then click <b>Account</b>.</p>
+    <img src="step-1.png" alt="Amazon account menu with Account highlighted">
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">2</span><span class="step-title">Open Login &amp; security</span></div>
+    <p>From Your Account, click the <b>Login &amp; security</b> tile.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">3</span><span class="step-title">Add a new Authenticator App</span></div>
+    <p>Under <b>Two-Step Verification (2SV) Settings</b> → <b>Backup methods</b>, click <b>Add new phone or Authenticator App</b>.</p>
+    <img src="step-2.png" alt="Two-Step Verification settings with Add new phone or Authenticator App highlighted">
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">4</span><span class="step-title">Choose Authenticator App, then click "Can't scan the barcode?"</span></div>
+    <p>Select the <b>Authenticator App</b> option. Don't scan the QR code — click <b>Can't scan the barcode?</b> instead. That's what reveals the actual key as text.</p>
+    <img src="step-3.png" alt="Add backup method screen with Can't scan the barcode link highlighted">
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">5</span><span class="step-title">Copy the key and add it to your authenticator app</span></div>
+    <p>A popup shows the key. Follow it exactly:</p>
+    <ul>
+      <li>Open your authenticator app (Google Authenticator, Authy, etc.) and choose <b>"Manually add account"</b>.</li>
+      <li>For the account name, enter your full email address.</li>
+      <li>For the key, enter the exact string Amazon just showed you (spaces don't matter).</li>
+      <li>Set the key type to <b>"Time based"</b>.</li>
+      <li>Tap <b>Add</b>.</li>
+    </ul>
+    <img src="step-4.png" alt="Can't scan the barcode popup with manual entry instructions and Verify OTP and continue button">
+    <div class="keyhint">
+      <b>Copy this same key string for the sign-up form</b>
+      This is what goes in the "Amazon 2FA Authenticator Key" field. Example of what it looks like (yours will be different):<br>
+      H6MU JLST XTLF Y7ZK 3NGR KT46 HPRD 7KKA GKWJ BTUP PZGH DZN5 SL4Q
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">6</span><span class="step-title">Enter the generated code, then Verify OTP and continue</span></div>
+    <p>Your authenticator app will now be generating a 6-digit code. Type that code into the box on Amazon's page.</p>
+    <div class="callout">
+      <b>⚠️ Don't skip this:</b> you must click <b>"Verify OTP and continue"</b> after entering the code. The key isn't actually active on your account until you press that button — if you close the page without clicking it, the whole setup didn't take effect and Stellar won't be able to log in.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">7</span><span class="step-title">You're done</span></div>
+    <p>Save the key somewhere safe, then paste that same key into the <b>Amazon 2FA Authenticator Key</b> field back on the Swyft ACO sign-up form.</p>
+  </div>
+
+  <a class="back" href="../">← Back to sign-up form</a>
+</div>
+</body>
+</html>

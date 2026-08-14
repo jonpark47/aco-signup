@@ -189,6 +189,13 @@
           <input type="password" id="amazonPassword">
           <button type="button" class="pw-toggle" data-target="amazonPassword">show</button>
         </div>
+        <label>Amazon 2FA Authenticator Key</label>
+        <a class="imap-link" href="amazon-2fa-guide/" target="_blank" rel="noopener">🔑 Don't have this yet? Click here for step-by-step instructions</a>
+        <div class="toggle-pass">
+          <input type="password" id="amazon2fa" placeholder="Ex. H6MU JLST XTLF Y7ZK 3NGR KT46 HPRD 7KKA GKWJ BTUP PZGH DZN5 SL4Q">
+          <button type="button" class="pw-toggle" data-target="amazon2fa">show</button>
+        </div>
+        <p class="hint">Not your password — this is the 2FA authenticator key from Amazon's Login &amp; Security settings. Required so Stellar can log in automatically.</p>
       </div>
       <div id="bandaiPwWrap" style="display:none">
         <label>Bandai Account Password</label>
@@ -360,7 +367,7 @@ const RETAILER_NAMES = {pkc:'Pokémon Center', sams:"Sam's Club", amazon:'Amazon
 // Every field that belongs to a retailer's own profile (NOT the global
 // acknowledgement checkbox -- that's confirmed once for the whole submission).
 const FIELD_IDS = ['email','discordId','onlyOneCheckout',
-  'amazonPassword','bandaiPassword','riftboundPassword',
+  'amazonPassword','amazon2fa','bandaiPassword','riftboundPassword',
   'cardName','cardType','cardNumber','expMonth','expYear','cvv',
   'shipName','shipPhone','shipAddress','shipAddress2','shipPost','shipCity','shipState','shipCountry',
   'billName','billPhone','billAddress','billAddress2','billPost','billCity','billState','billCountry',
@@ -369,7 +376,7 @@ const CHECK_IDS = ['sameBilling','samsHasMembership','imapConfirm'];
 const FIELD_DEFAULTS = {onlyOneCheckout:'TRUE', cardType:'Visa', sameBilling:true};
 
 const FIELD_LABELS = {
-  email:'Email/Account Email', amazonPassword:'Amazon Password', bandaiPassword:'Bandai Password',
+  email:'Email/Account Email', amazonPassword:'Amazon Password', amazon2fa:'Amazon 2FA Authenticator Key', bandaiPassword:'Bandai Password',
   riftboundPassword:'Riftbound Password', cardName:'Name on Card', cardNumber:'Card Number',
   expMonth:'Exp. Month', expYear:'Exp. Year', cvv:'CVV', shipName:'Shipping Name',
   shipPhone:'Shipping Phone', shipAddress:'Shipping Address 1', shipAddress2:'Shipping Address 2', shipPost:'Shipping Post Code',
@@ -385,7 +392,7 @@ const FIELD_LABELS = {
 const REQUIRED = {
   pkc: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
   sams: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','samsEmail','samsPassword','imap'],
-  amazon: ['email','amazonPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap'],
+  amazon: ['email','amazonPassword','amazon2fa','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap'],
   bandai: ['email','bandaiPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
   riftbound: ['email','riftboundPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap'],
 };
@@ -575,6 +582,7 @@ function buildBlockFor(key, data){
       '=== AMAZON PROFILE ===','',
       `Amazon Account Email: ${fv(data,'email')}`,
       `Amazon Account Password: ${fv(data,'amazonPassword')}`,
+      `Amazon 2FA Authenticator Key: ${fv(data,'amazon2fa')}`,
       `Discord User ID (optional): ${fv(data,'discordId')}`,
       `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
       '--- CARD ---',
