@@ -195,7 +195,11 @@
           <input type="password" id="amazon2fa" placeholder="Ex. H6MU JLST XTLF Y7ZK 3NGR KT46 HPRD 7KKA GKWJ BTUP PZGH DZN5 SL4Q">
           <button type="button" class="pw-toggle" data-target="amazon2fa">show</button>
         </div>
-        <p class="hint">Not your password — this is the 2FA authenticator key from Amazon's Login &amp; Security settings. Required so Stellar can log in automatically.</p>
+        <p class="hint">Not your password — this is the 2FA authenticator key from Amazon's Login &amp; Security settings. Required so we can log in automatically.</p>
+        <div class="checkrow">
+          <input type="checkbox" id="amazon2faConfirm">
+          <label for="amazon2faConfirm">I clicked "Verify OTP and continue" on Amazon after entering the code — my key won't work otherwise</label>
+        </div>
       </div>
       <div id="bandaiPwWrap" style="display:none">
         <label>Bandai Account Password</label>
@@ -372,7 +376,7 @@ const FIELD_IDS = ['email','discordId','onlyOneCheckout',
   'shipName','shipPhone','shipAddress','shipAddress2','shipPost','shipCity','shipState','shipCountry',
   'billName','billPhone','billAddress','billAddress2','billPost','billCity','billState','billCountry',
   'samsEmail','samsPassword','imap'];
-const CHECK_IDS = ['sameBilling','samsHasMembership','imapConfirm'];
+const CHECK_IDS = ['sameBilling','samsHasMembership','imapConfirm','amazon2faConfirm'];
 const FIELD_DEFAULTS = {onlyOneCheckout:'TRUE', cardType:'Visa', sameBilling:true};
 
 const FIELD_LABELS = {
@@ -384,17 +388,18 @@ const FIELD_LABELS = {
   billName:'Billing Name', billPhone:'Billing Phone', billAddress:'Billing Address 1', billAddress2:'Billing Address 2',
   billPost:'Billing Post Code', billCity:'Billing City', billState:'Billing State',
   billCountry:'Billing Country', samsEmail:"Sam's Email", samsPassword:"Sam's Password",
-  imap:'IMAP (email:app-password)',
+  imap:'IMAP (email:app-password)', imapConfirm:'"I understand the IMAP email must match" checkbox',
+  amazon2faConfirm:'"I clicked Verify OTP and continue" checkbox',
 };
 
 // Required fields per retailer -- billing is added on top of this at
 // validation time only when "same as shipping" is unchecked.
 const REQUIRED = {
   pkc: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
-  sams: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','samsEmail','samsPassword','imap'],
-  amazon: ['email','amazonPassword','amazon2fa','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap'],
+  sams: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','samsEmail','samsPassword','imap','imapConfirm'],
+  amazon: ['email','amazonPassword','amazon2fa','amazon2faConfirm','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap','imapConfirm'],
   bandai: ['email','bandaiPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
-  riftbound: ['email','riftboundPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap'],
+  riftbound: ['email','riftboundPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap','imapConfirm'],
 };
 const BILLING_FIELDS = ['billName','billPhone','billAddress','billPost','billCity','billState','billCountry'];
 
@@ -707,7 +712,11 @@ function buildBlockFor(key, data){
 function validateProfile(key, data){
   const req = REQUIRED[key].slice();
   if(!fc(data, 'sameBilling')) req.push(...BILLING_FIELDS);
-  return req.filter(id => !fv(data, id)).map(id => FIELD_LABELS[id] || id);
+  // checkboxes store a boolean, not a string -- fv() would read false as the
+  // non-empty string "false" and treat it as filled, so required checkboxes
+  // never actually got enforced. Route by field type instead.
+  const isMissing = id => CHECK_IDS.includes(id) ? !fc(data, id) : !fv(data, id);
+  return req.filter(isMissing).map(id => FIELD_LABELS[id] || id);
 }
 
 const previewBox = document.getElementById('previewBox');
