@@ -129,7 +129,20 @@
     <p>Save the key somewhere safe, then paste that same key into the <b>Amazon 2FA Authenticator Key</b> field back on the Swyft ACO sign-up form.</p>
   </div>
 
-  <a class="back" href="../">← Back to sign-up form</a>
+  <a class="back" href="../" id="backLink">← Back to sign-up form</a>
 </div>
+<script>
+  // This page opens in its own tab, so the original sign-up form (with
+  // everything you already typed) is still sitting there untouched behind
+  // it. Close back to that real tab instead of loading a second, blank
+  // copy of the form. Falls back to a normal navigation if this tab wasn't
+  // opened from the form (e.g. someone linked directly to this guide).
+  document.getElementById('backLink').addEventListener('click', (e) => {
+    if (window.opener) {
+      e.preventDefault();
+      window.close();
+    }
+  });
+</script>
 </body>
 </html>
