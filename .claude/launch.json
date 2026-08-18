@@ -4,7 +4,7 @@
     {
       "name": "aco-signup-local",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "5175", "C:\\Users\\jons-laptop\\OneDrive\\Documents\\aco-signup"],
+      "runtimeArgs": ["serve", "-l", "5175", "."],
       "port": 5175
     }
   ]
