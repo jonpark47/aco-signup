@@ -175,6 +175,7 @@
     <button type="button" data-retailer="amazon">🟠 Amazon<span class="done-dot">✓</span></button>
     <button type="button" data-retailer="bandai">🟣 Bandai<span class="done-dot">✓</span></button>
     <button type="button" data-retailer="riftbound">🟢 Riftbound<span class="done-dot">✓</span></button>
+    <button type="button" data-retailer="supreme">🔴 Supreme<span class="done-dot">✓</span></button>
   </div>
 
   <form id="signupForm">
@@ -215,7 +216,7 @@
           <button type="button" class="pw-toggle" data-target="riftboundPassword">show</button>
         </div>
       </div>
-      <label>Discord User ID (optional)</label>
+      <label>Discord User ID</label>
       <input type="text" id="discordId" placeholder="Ex. 193267488341884928" inputmode="numeric" autocomplete="off">
       <p class="hint">This is your numeric user ID, not your username. Enable <b>Developer Mode</b> in Discord (Settings → Advanced), then right-click your profile → <b>Copy User ID</b>.</p>
       <label>Only One Checkout?</label>
@@ -365,8 +366,8 @@ window.addEventListener('error', (e)=>{
   if(banner){ banner.style.display = 'block'; banner.textContent = '⚠️ Script error: ' + e.message + ' (line ' + e.lineno + ')'; }
 });
 
-const RETAILERS = ['pkc','sams','amazon','bandai','riftbound'];
-const RETAILER_NAMES = {pkc:'Pokémon Center', sams:"Sam's Club", amazon:'Amazon', bandai:'Bandai', riftbound:'Riftbound'};
+const RETAILERS = ['pkc','sams','amazon','bandai','riftbound','supreme'];
+const RETAILER_NAMES = {pkc:'Pokémon Center', sams:"Sam's Club", amazon:'Amazon', bandai:'Bandai', riftbound:'Riftbound', supreme:'Supreme'};
 
 // Every field that belongs to a retailer's own profile (NOT the global
 // acknowledgement checkbox -- that's confirmed once for the whole submission).
@@ -380,7 +381,7 @@ const CHECK_IDS = ['sameBilling','samsHasMembership','imapConfirm','amazon2faCon
 const FIELD_DEFAULTS = {onlyOneCheckout:'TRUE', cardType:'Visa', sameBilling:true};
 
 const FIELD_LABELS = {
-  email:'Email/Account Email', amazonPassword:'Amazon Password', amazon2fa:'Amazon 2FA Authenticator Key', bandaiPassword:'Bandai Password',
+  email:'Email/Account Email', discordId:'Discord User ID', amazonPassword:'Amazon Password', amazon2fa:'Amazon 2FA Authenticator Key', bandaiPassword:'Bandai Password',
   riftboundPassword:'Riftbound Password', cardName:'Name on Card', cardNumber:'Card Number',
   expMonth:'Exp. Month', expYear:'Exp. Year', cvv:'CVV', shipName:'Shipping Name',
   shipPhone:'Shipping Phone', shipAddress:'Shipping Address 1', shipAddress2:'Shipping Address 2', shipPost:'Shipping Post Code',
@@ -395,11 +396,12 @@ const FIELD_LABELS = {
 // Required fields per retailer -- billing is added on top of this at
 // validation time only when "same as shipping" is unchecked.
 const REQUIRED = {
-  pkc: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
-  sams: ['email','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','samsEmail','samsPassword','imap','imapConfirm'],
-  amazon: ['email','amazonPassword','amazon2fa','amazon2faConfirm','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap','imapConfirm'],
-  bandai: ['email','bandaiPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
-  riftbound: ['email','riftboundPassword','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap','imapConfirm'],
+  pkc: ['email','discordId','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
+  sams: ['email','discordId','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','samsEmail','samsPassword','imap','imapConfirm'],
+  amazon: ['email','amazonPassword','amazon2fa','amazon2faConfirm','discordId','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap','imapConfirm'],
+  bandai: ['email','bandaiPassword','discordId','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
+  riftbound: ['email','riftboundPassword','discordId','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry','imap','imapConfirm'],
+  supreme: ['email','discordId','cardName','cardNumber','expMonth','expYear','cvv','shipName','shipPhone','shipAddress','shipPost','shipCity','shipState','shipCountry'],
 };
 const BILLING_FIELDS = ['billName','billPhone','billAddress','billPost','billCity','billState','billCountry'];
 
@@ -506,7 +508,7 @@ function buildBlockFor(key, data){
     lines = [
       '=== POKÉMON CENTER PROFILE ===','',
       `Email Address: ${fv(data,'email')}`,
-      `Discord User ID (optional): ${fv(data,'discordId')}`,
+      `Discord User ID: ${fv(data,'discordId')}`,
       `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
       '--- CARD ---',
       `Name on Card: ${fv(data,'cardName')}`,
@@ -543,7 +545,7 @@ function buildBlockFor(key, data){
     lines = [
       "=== SAM'S CLUB PROFILE ===",'',
       `Email Address: ${fv(data,'email')}`,
-      `Discord User ID (optional): ${fv(data,'discordId')}`,
+      `Discord User ID: ${fv(data,'discordId')}`,
       `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
       '--- CARD ---',
       `Name on Card: ${fv(data,'cardName')}`,
@@ -588,7 +590,7 @@ function buildBlockFor(key, data){
       `Amazon Account Email: ${fv(data,'email')}`,
       `Amazon Account Password: ${fv(data,'amazonPassword')}`,
       `Amazon 2FA Authenticator Key: ${fv(data,'amazon2fa')}`,
-      `Discord User ID (optional): ${fv(data,'discordId')}`,
+      `Discord User ID: ${fv(data,'discordId')}`,
       `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
       '--- CARD ---',
       `Name on Card: ${fv(data,'cardName')}`,
@@ -629,7 +631,7 @@ function buildBlockFor(key, data){
       '=== BANDAI PROFILE ===','',
       `Bandai Account Email: ${fv(data,'email')}`,
       `Bandai Account Password: ${fv(data,'bandaiPassword')}`,
-      `Discord User ID (optional): ${fv(data,'discordId')}`,
+      `Discord User ID: ${fv(data,'discordId')}`,
       `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
       '--- CARD ---',
       `Name on Card: ${fv(data,'cardName')}`,
@@ -667,7 +669,7 @@ function buildBlockFor(key, data){
       '=== RIFTBOUND PROFILE ===','',
       `Riftbound Account Email: ${fv(data,'email')}`,
       `Riftbound Account Password: ${fv(data,'riftboundPassword')}`,
-      `Discord User ID (optional): ${fv(data,'discordId')}`,
+      `Discord User ID: ${fv(data,'discordId')}`,
       `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
       '--- CARD ---',
       `Name on Card: ${fv(data,'cardName')}`,
@@ -701,6 +703,43 @@ function buildBlockFor(key, data){
     lines.push('', '--- EMAIL ACCESS (needed for OTP / order verification codes) ---',
       `IMAP (email:app-password), see IMAP guide in the table of contents below: ${fv(data,'imap')}`,
       `Riftbound email + IMAP email MUST match or you won't be ran, type I UNDERSTAND: ${fc(data,'imapConfirm') ? 'I UNDERSTAND' : ''}`);
+  }
+
+  if(key==='supreme'){
+    lines = [
+      '=== SUPREME PROFILE ===','',
+      `Email Address: ${fv(data,'email')}`,
+      `Discord User ID: ${fv(data,'discordId')}`,
+      `Only One Checkout (TRUE/FALSE): ${fv(data,'onlyOneCheckout')}`,'',
+      '--- CARD ---',
+      `Name on Card: ${fv(data,'cardName')}`,
+      `Card Type (Visa/MasterCard): ${fv(data,'cardType')}`,
+      `Card Number (NO SPACES): ${fv(data,'cardNumber')}`,
+      `Expiration Month (MM): ${fv(data,'expMonth')}`,
+      `Expiration Year (YY): ${fv(data,'expYear')}`,
+      `CVV: ${fv(data,'cvv')}`,'',
+      '--- SHIPPING (required) ---',
+      `Shipping Name: ${fv(data,'shipName')}`,
+      `Shipping Phone (no spaces/dashes): ${fv(data,'shipPhone')}`,
+      `Shipping Address 1: ${fv(data,'shipAddress')}`,
+      `Shipping Address 2 (optional): ${fv(data,'shipAddress2')}`,
+      `Shipping Post Code: ${fv(data,'shipPost')}`,
+      `Shipping City: ${fv(data,'shipCity')}`,
+      `Shipping State (Ex. CA): ${fv(data,'shipState')}`,
+      `Shipping Country (Ex. USA): ${fv(data,'shipCountry')}`,'',
+      `Same Billing/Shipping (TRUE/FALSE): ${same ? 'TRUE' : 'FALSE'}`,
+    ];
+    if(!same){
+      lines.push('', '--- BILLING (only if DIFFERENT from shipping) ---',
+        `Billing Name: ${fv(data,'billName')}`,
+        `Billing Phone: ${fv(data,'billPhone')}`,
+        `Billing Address 1: ${fv(data,'billAddress')}`,
+        `Billing Address 2 (optional): ${fv(data,'billAddress2')}`,
+        `Billing Post Code: ${fv(data,'billPost')}`,
+        `Billing City: ${fv(data,'billCity')}`,
+        `Billing State: ${fv(data,'billState')}`,
+        `Billing Country: ${fv(data,'billCountry')}`);
+    }
   }
 
   return lines.join('\n');
