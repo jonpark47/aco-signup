@@ -24,12 +24,43 @@
     padding:16px 18px; margin-bottom:24px; font-size:.9rem; line-height:1.6; color:var(--muted);
   }
   .steps b{color:var(--text)}
-  .retailer-select{display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap}
-  .retailer-select button{
-    flex:1; min-width:120px; padding:12px; border-radius:10px; border:1px solid var(--border);
+  .retailer-dropdown{position:relative; margin-bottom:24px}
+  .retailer-trigger{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px; border-radius:10px; border:1px solid var(--border);
     background:var(--panel); color:var(--text); font-weight:600; cursor:pointer; font-size:.9rem;
+    font-family:inherit; transition:box-shadow .15s, border-color .15s;
   }
-  .retailer-select button.active{background:var(--accent); border-color:var(--accent); color:#fff}
+  .retailer-trigger:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .retailer-dropdown.open .retailer-trigger{border-color:var(--accent); box-shadow:0 0 16px rgba(91,140,255,.4)}
+  .retailer-trigger-left{display:flex; align-items:center; gap:10px; min-width:0}
+  .retailer-trigger-left span#triggerName{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .retailer-trigger .chevron{color:var(--muted); font-size:.75rem; flex-shrink:0; transition:transform .15s}
+  .retailer-dropdown.open .retailer-trigger .chevron{transform:rotate(180deg)}
+  .r-dot{width:11px; height:11px; border-radius:50%; flex-shrink:0; display:inline-block}
+  .retailer-panel{
+    list-style:none; margin:6px 0 0; padding:6px; position:absolute; top:100%; left:0; right:0;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    box-shadow:0 14px 30px rgba(0,0,0,.5); z-index:20; max-height:320px; overflow-y:auto;
+  }
+  .retailer-panel[hidden]{display:none}
+  .retailer-option{
+    display:flex; align-items:center; gap:10px; padding:10px 10px; border-radius:8px;
+    cursor:pointer; font-size:.9rem; font-weight:600; color:var(--text);
+  }
+  .retailer-option:hover, .retailer-option.focused{background:var(--panel2)}
+  .retailer-option.selected{background:var(--accent); color:#fff}
+  .retailer-option .r-name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .retailer-option .done-dot{
+    display:none; margin-left:auto; width:18px; height:18px; border-radius:50%; background:var(--ok);
+    color:#08301c; font-size:.68rem; font-weight:900; line-height:18px; text-align:center; flex-shrink:0;
+  }
+  .retailer-option.done .done-dot{display:inline-block}
+  .trigger-done-dot{
+    display:none; width:16px; height:16px; border-radius:50%; background:var(--ok); color:#08301c;
+    font-size:.62rem; font-weight:900; line-height:16px; text-align:center; flex-shrink:0;
+  }
+  .retailer-dropdown.trigger-done .trigger-done-dot{display:inline-block}
   fieldset{
     border:1px solid var(--border); border-radius:12px; padding:16px 18px 18px;
     margin:0 0 18px; background:var(--panel);
@@ -99,7 +130,8 @@
   @media (max-width:480px){
     .row3{grid-template-columns:1fr 1fr; gap:10px}
     .row3 > div:first-child{grid-column:1 / -1}
-    .retailer-select button{min-width:100px; font-size:.82rem; padding:11px 8px}
+    .retailer-trigger{font-size:.85rem; padding:11px 12px}
+    .retailer-option{font-size:.85rem}
     input[type=text], input[type=password], input[type=email], select, textarea{font-size:16px}
     .checkrow input[type=checkbox]{width:24px; height:24px; min-width:24px}
   }
@@ -126,18 +158,8 @@
   }
   @keyframes pulseDot{ 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.4; transform:scale(.8)} }
 
-  .retailer-select button{ transition:box-shadow .15s, border-color .15s }
-  .retailer-select button.active{ box-shadow:0 0 16px rgba(91,140,255,.4) }
   fieldset{ transition:box-shadow .15s, border-color .15s }
   fieldset:focus-within{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent), 0 0 18px rgba(91,140,255,.15) }
-
-  .retailer-select button{position:relative}
-  .retailer-select button .done-dot{
-    display:none; position:absolute; top:-4px; right:-4px; width:16px; height:16px;
-    border-radius:50%; background:var(--ok); color:#08301c; font-size:.65rem; font-weight:900;
-    line-height:16px; text-align:center; box-shadow:0 0 0 2px var(--bg);
-  }
-  .retailer-select button.done .done-dot{display:block}
 
 
   .ai-footer-badge{
@@ -169,13 +191,47 @@
   </div>
 
   <p class="hint" style="margin:-4px 0 10px">Fill out one retailer, switch to another to add it too, your info for each is kept. <b>Generate Secure Link</b> combines every retailer you've filled in.</p>
-  <div class="retailer-select">
-    <button type="button" class="active" data-retailer="pkc">🔵 Pokémon Center<span class="done-dot">✓</span></button>
-    <button type="button" data-retailer="sams">🟡 Sam's Club<span class="done-dot">✓</span></button>
-    <button type="button" data-retailer="amazon">🟠 Amazon<span class="done-dot">✓</span></button>
-    <button type="button" data-retailer="bandai">🟣 Bandai<span class="done-dot">✓</span></button>
-    <button type="button" data-retailer="riftbound">🟢 Riftbound<span class="done-dot">✓</span></button>
-    <button type="button" data-retailer="supreme">🔴 Supreme<span class="done-dot">✓</span></button>
+  <div class="retailer-dropdown" id="retailerDropdown">
+    <button type="button" class="retailer-trigger" id="retailerTrigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="retailerPanel">
+      <span class="retailer-trigger-left">
+        <span class="r-dot" id="triggerDot"></span>
+        <span id="triggerName">Pokémon Center</span>
+        <span class="done-dot trigger-done-dot" id="triggerDone">✓</span>
+      </span>
+      <span class="chevron" aria-hidden="true">▾</span>
+    </button>
+    <ul class="retailer-panel" id="retailerPanel" role="listbox" aria-label="Retailer" tabindex="-1" hidden>
+      <li role="option" class="retailer-option selected" data-retailer="pkc" id="opt-pkc" aria-selected="true">
+        <span class="r-dot" style="background:#3d70cb"></span>
+        <span class="r-name">Pokémon Center</span>
+        <span class="done-dot">✓</span>
+      </li>
+      <li role="option" class="retailer-option" data-retailer="sams" id="opt-sams" aria-selected="false">
+        <span class="r-dot" style="background:#dca841"></span>
+        <span class="r-name">Sam's Club</span>
+        <span class="done-dot">✓</span>
+      </li>
+      <li role="option" class="retailer-option" data-retailer="amazon" id="opt-amazon" aria-selected="false">
+        <span class="r-dot" style="background:#f77048"></span>
+        <span class="r-name">Amazon</span>
+        <span class="done-dot">✓</span>
+      </li>
+      <li role="option" class="retailer-option" data-retailer="bandai" id="opt-bandai" aria-selected="false">
+        <span class="r-dot" style="background:#7956b9"></span>
+        <span class="r-name">Bandai</span>
+        <span class="done-dot">✓</span>
+      </li>
+      <li role="option" class="retailer-option" data-retailer="riftbound" id="opt-riftbound" aria-selected="false">
+        <span class="r-dot" style="background:#4bbc87"></span>
+        <span class="r-name">Riftbound</span>
+        <span class="done-dot">✓</span>
+      </li>
+      <li role="option" class="retailer-option" data-retailer="supreme" id="opt-supreme" aria-selected="false">
+        <span class="r-dot" style="background:#d4394e"></span>
+        <span class="r-name">Supreme</span>
+        <span class="done-dot">✓</span>
+      </li>
+    </ul>
   </div>
 
   <form id="signupForm">
@@ -442,26 +498,132 @@ function allProfilesIncludingCurrent(){
 
 function updateRetailerBadges(){
   const all = profiles; // don't force a snapshot of the live tab here, just reflect saved state
-  document.querySelectorAll('.retailer-select button').forEach(btn=>{
-    const key = btn.dataset.retailer;
+  document.querySelectorAll('.retailer-option').forEach(opt=>{
+    const key = opt.dataset.retailer;
     const p = (key === retailer) ? snapshotCurrent() : all[key];
-    btn.classList.toggle('done', !isBlankProfile(p));
+    opt.classList.toggle('done', !isBlankProfile(p));
   });
+  // Subtle echo of the same "done" state on the closed trigger, for whichever
+  // retailer is currently selected.
+  retailerDropdown.classList.toggle('trigger-done', !isBlankProfile(snapshotCurrent()));
 }
 
-document.querySelectorAll('.retailer-select button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    if(btn.dataset.retailer === retailer) return;
+// ---- retailer dropdown (custom listbox replacing the old button row) -----
+const RETAILER_COLORS = {pkc:'#3d70cb', sams:'#dca841', amazon:'#f77048', bandai:'#7956b9', riftbound:'#4bbc87', supreme:'#d4394e'};
+const retailerDropdown = document.getElementById('retailerDropdown');
+const retailerTrigger = document.getElementById('retailerTrigger');
+const retailerPanel = document.getElementById('retailerPanel');
+const triggerDot = document.getElementById('triggerDot');
+const triggerName = document.getElementById('triggerName');
+const retailerOptions = [...document.querySelectorAll('.retailer-option')];
+
+// Same underlying switch logic the old button click handler used --
+// snapshot the outgoing tab, swap `retailer`, apply the incoming snapshot,
+// then refresh visibility/preview/badges. Only the trigger for calling this
+// changed (dropdown item click or keyboard selection instead of a button
+// click); the mechanism itself is untouched.
+function selectRetailer(key){
+  if(key !== retailer){
     profiles[retailer] = snapshotCurrent();
-    document.querySelectorAll('.retailer-select button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    retailer = btn.dataset.retailer;
+    retailer = key;
     applySnapshot(profiles[retailer]);
     updateVisibility();
     refreshPreview();
     updateRetailerBadges();
+  }
+  updateTriggerDisplay();
+}
+
+function updateTriggerDisplay(){
+  triggerDot.style.background = RETAILER_COLORS[retailer];
+  triggerName.textContent = RETAILER_NAMES[retailer];
+  retailerOptions.forEach(o=>{
+    const isSel = o.dataset.retailer === retailer;
+    o.classList.toggle('selected', isSel);
+    o.setAttribute('aria-selected', isSel ? 'true' : 'false');
   });
+}
+
+function isDropdownOpen(){ return !retailerPanel.hidden; }
+
+function openDropdown(){
+  retailerDropdown.classList.add('open');
+  retailerPanel.hidden = false;
+  retailerTrigger.setAttribute('aria-expanded', 'true');
+  setActiveOption(retailer);
+  retailerPanel.focus();
+}
+
+function closeDropdown(returnFocus){
+  retailerDropdown.classList.remove('open');
+  retailerPanel.hidden = true;
+  retailerTrigger.setAttribute('aria-expanded', 'false');
+  if(returnFocus) retailerTrigger.focus();
+}
+
+function setActiveOption(key){
+  retailerPanel.dataset.active = key;
+  retailerPanel.setAttribute('aria-activedescendant', 'opt-' + key);
+  retailerOptions.forEach(o => o.classList.toggle('focused', o.dataset.retailer === key));
+  const el = document.getElementById('opt-' + key);
+  if(el) el.scrollIntoView({ block: 'nearest' });
+}
+
+retailerTrigger.addEventListener('click', ()=>{
+  if(isDropdownOpen()) closeDropdown(false);
+  else openDropdown();
 });
+
+// Enter/Space open it; the panel itself (focused once open) handles arrow
+// navigation, Enter/Space to select, and Escape to close.
+retailerTrigger.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    openDropdown();
+  }
+});
+
+retailerOptions.forEach(opt=>{
+  opt.addEventListener('click', ()=>{
+    selectRetailer(opt.dataset.retailer);
+    closeDropdown(true);
+  });
+  opt.addEventListener('mouseenter', ()=> setActiveOption(opt.dataset.retailer));
+});
+
+retailerPanel.addEventListener('keydown', (e)=>{
+  const activeKey = retailerPanel.dataset.active || retailer;
+  const idx = RETAILERS.indexOf(activeKey);
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    setActiveOption(RETAILERS[Math.min(idx + 1, RETAILERS.length - 1)]);
+  }else if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    setActiveOption(RETAILERS[Math.max(idx - 1, 0)]);
+  }else if(e.key === 'Home'){
+    e.preventDefault();
+    setActiveOption(RETAILERS[0]);
+  }else if(e.key === 'End'){
+    e.preventDefault();
+    setActiveOption(RETAILERS[RETAILERS.length - 1]);
+  }else if(e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    selectRetailer(activeKey);
+    closeDropdown(true);
+  }else if(e.key === 'Escape'){
+    e.preventDefault();
+    closeDropdown(true);
+  }else if(e.key === 'Tab'){
+    // Let focus continue moving through the form naturally; just close first.
+    closeDropdown(false);
+  }
+});
+
+document.addEventListener('click', (e)=>{
+  if(isDropdownOpen() && !retailerDropdown.contains(e.target)) closeDropdown(false);
+});
+
+updateTriggerDisplay();
 
 const EMAIL_LABELS = {
   amazon: 'Amazon Account Email',
